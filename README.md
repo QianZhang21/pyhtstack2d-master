@@ -11,7 +11,7 @@ PyHTStack2D is a Python package designed for high-throughput stacking of two-dim
 - **Data Extraction and Analysis:** Perform batch extraction of calculation results and conduct basic analyses.
 
 ## Installation and Use
-For detailed installation instructions, configuration settings, and usage examples, please refer to the `Documentation.md` file included with the package or visit our [GitHub repository](https://github.com/QianZhang21/PyHTStack2D).
+For detailed installation instructions, configuration settings, and usage examples, please refer to the `Documentation.md` file included with the package or visit our [GitHub repository](https://github.com/QianZhang21/pyhtstack2d-master).
 
 ## License
 
