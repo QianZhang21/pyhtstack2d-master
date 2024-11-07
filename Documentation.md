@@ -545,6 +545,20 @@ The keys in `biInputdict.json` are described as follows:
 
 Since VASP performs ferromagnetic (FM) calculations by default when spin-polarization is enabled, FM calculations can be optionally skipped in practical cases to reduce computational costs.
 
+Job submission scripts can be generated with the function `genRunsh`.
+
+**Use Cases**
+
+```python
+from pyhtstack2d.calcSets.vaspMagSetsWriter import MonoMagState
+# Generate the PBS job submission script for magnetic monolayer calculations
+MonoMagState().genRunsh(pbs=True, moduleload="vasp/5.4.4-intel2019", vasp="vasp_std_2D")
+
+from pyhtstack2d.calcSets.vaspMagSetsWriter import BiMagState
+# Generate the SLURM job submission script for bilayer magnetic calculations
+BiMagState().genRunsh(pbs=True, moduleload="vasp/5.4.4-intel2019", vasp="vasp_std_2D")
+```
+
 To obtain results such as analyzing the magnetic ground state (MGS), use the following code:
 
 **Use Cases**
