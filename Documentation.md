@@ -93,30 +93,7 @@ This module provides functions to query the Computational 2D Materials Database 
 ```python
 # Define specific criteria for filtering 2D materials from C2DB.
 criteria = 'natoms=3, dyn_stab=Yes, hform<0, gap>0, layergroup=p3m1'
-# Database file obtained from C2DB developers.
-db = "c2db.db"
 
-# Retrieve POSCAR files for 2D materials from C2DB based on specified criteria.
-from pyhtstack2d.tools.queryDB import getPOSACR
-getPOSACR(database=db, criteria=criteria)
-
-# Fetch the unique ID of 2D materials from C2DB based on specific criteria, and save the results to a CSV file.
-from pyhtstack2d.tools.queryDB import getuid
-getuid(database=db, criteria=criteria, save_csv_path='tmd_p3m1.csv', save_csv=True)
-
-# Filter for direct bandgap 2D materials from the CSV file.
-# Keywords 'uid', 'gap', and 'gap_dir' are as defined in C2DB.
-import pandas
-tmd_p3m1 = pandas.read_csv('tmd_p3m1.csv')
-tmd_p3m1_uid_dir = []
-for i in range(len(tmd_p3m1)):
-    if abs(tmd_p3m1.iloc[i]['gap'] - tmd_p3m1.iloc[i]['gap_dir']) < 1e-3:
-        tmd_p3m1_uid_dir.append(tmd_p3m1.iloc[i]['uid'])
-
-# Retrieve POSCAR files for selected 2D materials from C2DB using their unique IDs.
-from pyhtstack2d.tools.queryDB import getPOSACRfromuid
-for uid_i in tmd_p3m1_uid_dir:
-    getPOSACRfromuid(database=db, uid=uid_i)
 ```
 
 ### 4.1.2 `pyhtstack2d.tools.queryDBurl`
@@ -127,10 +104,7 @@ This module retrieves the POSCAR file for a specified material directly from a w
 
 ```python
 from pyhtstack2d.tools.getPOSCARurl import DBuidPOSCAR
-# Specify the unique ID of the material
-uid = '1MoS2-1'
-# Retrieve the POSCAR file from C2DB using the uid, with the option to overwrite any existing file
-DBuidPOSCAR(uid=uid, db="c2db", overwrite=True)
+
 ```
 
 ### 4.1.3 `pyhtstack2d.tools.cif2pos`
@@ -140,10 +114,7 @@ This module facilitates the conversion of CIF files to POSCAR format.
 **Use cases**:
 
 ```python
-from pyhtstack2d.tools.cif2pos import ciftopos
-# Specify the directory path containing the CIF files; set to None if the files are in the current directory.
-# This command will convert all *.cif files in the specified directory to POSCAR format.
-ciftopos(cifpath='./cif_dir')
+
 ```
 
 ### 4.1.3 `pyhtstack2d.tools.POSCARelemc`
@@ -153,13 +124,7 @@ This module is used to modify the elements in a POSCAR file.
 **Use cases**:
 
 ```python
-from pyhtstack2d.tools.POSCARelemc import modify_elements_in_poscar
-# Specify the POSCAR file path and the new elements to replace the existing ones.
-file_path = "Ag2ReBr6-POSCAR"
-new_elements = ['Ag', 'V', 'P', 'S']
-save_path = "POSCAR_dir"
-# Modify the elements in the POSCAR file and save the modified file to the specified directory.
-modify_elements_in_poscar(file_path, new_elements, save_path)
+
 ```
 
 ### 4.1.4 `pyhtstack2d.tools.renameposcar`
@@ -169,9 +134,7 @@ For stacking purposes, POSCAR filenames need to follow the "uid-POSCAR" format. 
 **Use cases**:
 
 ```python
-from pyhtstack2d.tools.renameposcar import swap_poscar_filename
-# Specify the folder containing POSCAR files. This function renames files as needed to match the "*-POSCAR" format.
-swap_poscar_filename(folder_path="POSCAR_dir")
+
 ```
 
 ### 4.1.5 `pyhtstack2d.buildbilayer.builsupercell`
@@ -227,39 +190,6 @@ For instance, you can stack MoS₂ and WSe₂ bilayer structures by specifying t
 ```python
 from pyhtstack2d.buildbilayer.stackBilayer import Bilayer
 
-# Define elements, lattice, and positions for MoS₂
-elem1 = ['Mo', 'S', 'S']
-la1 = [[3.184, 0.0, 0.0], [-1.592, 2.757, 0.0], [0.0, 0.0, 18.127]]
-pos1 = [[0.0, 0.0, 0.50], [2/3, 1/3, 0.59], [2/3, 1/3, 0.41]]
-# Define elements, lattice, and positions for WSe₂
-elem2 = ['W', 'Se', 'Se']
-la2 = [[3.319, 0.0, 0.0], [-1.659, 2.874, 0.0], [0.0, 0.0, 18.358]]
-pos2 = [[0.0, 0.0, 0.50], [2/3, 1/3, 0.59], [2/3, 1/3, 0.41]]
-# Construct AA stacking of MoS₂/WSe₂
-Bilayer(elem1, elem2, la1=la1, la2=la2, position1=pos1, position2=pos2).WritePOSCAR()
-
-# Construct AB stacking of MoS₂/WSe₂
-pos2 = [[2/3, 1/3, 0.50], [0.0, 0.0, 0.59], [0.0, 0.0, 0.41]]
-Bilayer(st1=elem1, st2=elem2, la1=la1, la2=la2, position1=pos1, position2=pos2, stackmode="AB").WritePOSCAR()
-
-# Alternatively, stack using POSCAR files
-poscar1 = "MoS2-POSCAR"
-poscar2 = "WSe2-POSCAR"
-Bilayer(st1=poscar1, st2=poscar2).WritePOSCAR()
-
-# Create a three-layer stack of MoS₂/WSe₂/MoS₂
-biposcar = "BiPOSCAR dir/S2MoSe2W_4.15%_3/AA/cord1/POCAR"
-Bilayer(st1=biposcar, st2=poscar1, d_inter=3.5, lv=35.0).WritePOSCAR()
-```
-
-For non-`Bilayer` classes, structural information should be entered sequentially according to atomic positions in the z-direction, for example:
-
-```python
-from pyhtstack2d.buildbilayer.stackBilayer import TMDHBilayer
-elem1 = ['S', 'Mo', 'S']
-a1 = 3.184
-d_intra1 = [1.63, 1.63]
-TMDHBilayer(st1=elem1, a1=a1, d_intra1=d_intra1).WritePOSCAR()
 ```
 
 ### 4.2.2. `pyhtstack2d.buildbilayer.batchStackBilayer`
@@ -403,13 +333,7 @@ This module generates input files for VASP (Vienna Ab initio Simulation Package)
 from pyhtstack2d.calcSets.vaspSetsWriter import InputWriter
 import os
 from glob import glob
-# Example: Generate VASP input files with DFT-D3 no-damping correction for a static calculation
-filenames = glob(os.path.join("POSCAR_dir", "*"))
-InputWriter(filenames, inputOpt='scf-d3-dip', kmeshrv=0.04).write_input()
 
-# Example: For nested directories and multi-task calculations
-# When POSCAR files are stored in nested directories, use `write_input_multi_pos()` instead of `write_input()`
-InputWriter(posdir='BiPOSCAR_dir',inputOpt='scf-d3-dip',kmeshrv=0.04,taskname='scf').write_input_multi_pos()
 ```
 
 ### 4.3.4. `pyhtstack2d.calcSets.vaspPmgWriter`
@@ -425,15 +349,7 @@ This module generates input files for VASP calculations using the pymatgen inter
 
 ```python
 from pyhtstack2d.calcSets.vaspPmgWriter import PmgInputWriter
-# Display available setting modes
-PmgInputWriter().mode_show()
-# Example: Generate input files with a specific pymatgen mode and task name suffix
-# Iterates through files in the default "POSCAR_dir" folder
-PmgInputWriter(inputOpt="MPStatic", taskname="scf").write_input()
 
-# Example: For nested directories and multi-task calculations
-# When POSCAR files are stored in nested directories, use `write_input_multi_pos()` instead of `write_input()`
-PmgInputWriter(posdir="BiPOSCAR_dir").write_input_multi_pos()
 ```
 
 ### 4.3.5. `pyhtstack2d.calcSets.vaspVaspkitWriter`
@@ -464,16 +380,7 @@ This module generates input files for VASP calculations using the Vaspkit interf
 **Use Cases**
 
 ```python
-from pyhtstack2d.calcSets.vaspVaspkitWriter import VaspkitInputWriter
-from glob import glob
-import os
-# Example: Generate input files for HSE06-D3 static calculation with a hybrid band structure k-path setting
-filenames = glob(os.path.join("POSCAR_dir", "*"))
-VaspkitInputWriter(filenames,inputOpt="STH6D3",Hybridbandkpath=[251, 1, 0.04, 0.04],taskname="hybband").write_input()
 
-# Example: For nested directories
-# Use `write_input_multi_pos()` for POSCAR files in nested directories
-VaspkitInputWriter(posdir="BiPOSCAR_dir",taskname="scf").write_input_multi_pos()
 ```
 
 ### 4.3.6. `pyhtstack2d.tools.genInput.GenRunDir`
@@ -505,18 +412,7 @@ This module is designed for batch generation of input files for VASP calculation
 **Use Cases**
 
 ```python
-from pyhtstack2d.tools.genInput import GenRunDir
-# Example: Generate input files in basic mode with custom INCAR settings and single-task submission script `run.sh`
-user_incar_settings = {"NPAR": 16, "EDIFF": 1e-8, "IVDW": 12}
-GenRunDir(posdir="TMD_POSCAR_dir",genmode="basic",inputOpt='scf',user_incar_settings=user_incar_settings).genInputfile()
 
-# Example: Generate input files for multi-task calculations with Vaspkit and SLURM submission
-GenRunDir(genmode="vaspkit",subset="slurm",kmeshrv=0.02,shoverwrite=True,taskname="scf").genInputfile()
-
-# Example: Generate input files for a nested multi-level directory structure and multiple tasks ('relax', 'scf', and 'band')
-GenRunDir(posdir="BiPOSCAR_dir",multilevel=4,inputOpt="relax-dip",kmeshrv=0.04,taskname="opt").genInputfile()
-GenRunDir(posdir="BiPOSCAR_dir",multilevel=4,inputOpt="scf-dip",kmeshrv=0.04,taskname="scf").genInputfile()
-GenRunDir(posdir="BiPOSCAR_dir",multilevel=4,inputOpt="band-dip",kmeshrv=0.04,postype='H',taskname="band").genInputfile()
 ```
 
 ### 4.3.7. `pyhtstack2d.calcSets.vaspMagSetsWriter`
@@ -544,16 +440,7 @@ For generating the INCAR file in magnetic system VASP calculations, use the foll
 **Use Cases**
 
 ```python
-from pyhtstack2d.calcSets.vaspMagSetsWriter import MonoMagState
-# Generate input files for magnetic monolayer calculation
-# `INCARbasic` is the basic INCAR file. `supercellgen` is used to create supercells ("pmg" or "vaspkit").
-# `vaspkitKpoints`, `kmseshScheme`, and `kmeshrv` are parameters for generating the KPOINTS file with Vaspkit.
-MonoMagState().genInputfile(INCARbasic="INCAR-basic", supercellgen="pmg", vaspkitKpoints=True, kmseshScheme=2, kmeshrv=0.04)
 
-from pyhtstack2d.calcSets.vaspMagSetsWriter import BiMagState
-# Generate input files for bilayer magnetic calculations
-# Please ensure that the `monomagdict.json` file is present and contains the magnetic information for the monolayer.
-BiMagState(maglist="bimaterials.txt", pmg=True).genInputfile(INCARbasic="INCAR")
 ```
 
 > **Note**: The file `biInputdict.json` is automatically generated when `BiMagState()` is called. If the magnetic atom or monolayer information changes, delete `biInputdict.json` before calling `BiMagState()` again.
@@ -586,13 +473,7 @@ Job submission scripts can be generated with the function `genRunsh`.
 **Use Cases**
 
 ```python
-from pyhtstack2d.calcSets.vaspMagSetsWriter import MonoMagState
-# Generate the PBS job submission script for magnetic monolayer calculations
-MonoMagState().genRunsh(pbs=True, moduleload="vasp/5.4.4-intel2019", vasp="vasp_std_2D")
 
-from pyhtstack2d.calcSets.vaspMagSetsWriter import BiMagState
-# Generate the SLURM job submission script for bilayer magnetic calculations
-BiMagState().genRunsh(pbs=True, moduleload="vasp/5.4.4-intel2019", vasp="vasp_std_2D")
 ```
 
 To obtain results such as analyzing the magnetic ground state (MGS), use the following code:
@@ -600,16 +481,7 @@ To obtain results such as analyzing the magnetic ground state (MGS), use the fol
 **Use Cases**
 
 ```python
-from pyhtstack2d.calcSets.vaspMagSetsWriter import MonoMagState
-# Parameters:
-# - oszipath: Path to the FM calculation results.
-# - FMm4: If True, multiplies the FM calculation energy by 4.
-# - copyCONTCAR: If True, copies the CONTCAR file of the MGS to the POSCAR file.
-MonoMagState(maglist="magdict.json").getEnergy(oszipath=None, FMm4=False, copyCONTCAR=True)
 
-from pyhtstack2d.calcSets.vaspMagSetsWriter import BiMagState
-# - skipNFM: If True, skips NM/FM calculations for bilayer structures. However, it will still read energies for NM/NM and NM/FM combinations if set to True.
-BiMagState().getEnergy(oszipath=None, FMm4=False, copyCONTCAR=True, skipNFM=False)
 ```
 
 The results are saved as JSON files:
@@ -655,11 +527,7 @@ This module adds U corrections to the INCAR file based on a given POSCAR file.
 **Use Case**
 
 ```python
-from pyhtstack2d.calcSets.Pu import INCARPu
 
-# Example: Adding U corrections to elements in the INCAR file
-elem = "Cl   Bi   S    Se   Sc".split()
-INCARPu(elem, "INCAR")
 ```
 
 
@@ -679,13 +547,7 @@ This module updates INCAR files with new parameters or settings from an `INCAR-b
 **Use Cases**
 
 ```python
-from pyhtstack2d.calcSets.vaspINCARupdate import UpdateINCAR
-# Example: Update all INCAR files in specified directories using parameters from `incarbasic="INCAR"` file.
-UpdateINCAR(materiallist="maglist.txt", incarbasic="INCAR" ,pU=True, ismag=True).updateIncarfiles()
 
-
-# Example: Directly overwrite the original INCAR file and collate content to remove duplicates.
-UpdateINCAR(materiallist="maglist.txt", collateincar=True).genIncarfiles()
 ```
 
 
@@ -714,30 +576,13 @@ The parameters **`multilevel`**, **`subset`**, **`mpirun`**, **`vasp`**, and **`
 **Use Cases**
 
 ```python
-from pyhtstack2d.tools.genInput import GenMultiSh
-# Example: Generate job submission script with all output files saved for tasks "relax", "scf", and "band"
-GenMultiSh(tasklist=["relax", "scf", "band"], saveall=True).genRunsh()
 
-# Example: When INCAR and KPOINTS files are shared across all materials
-incpath = ["Inputfiles/INCAR-relax", "Inputfiles/INCAR-scf", "Inputfiles/INCAR-band"]
-kppath = ["Inputfiles/KPOINTS-relax", "Inputfiles/KPOINTS-scf", "Inputfiles/KPOINTS-band"]
-GenMultiSh(tasklist=["relax", "scf", "band"], incpath=incpath, kppath=kppath).genRunsh()
-
-# Example: For Quantum Espresso (QE) multi-task calculations
-from pyhtstack2d.tools.genInput import GenMultiQESh
-GenMultiQESh(tasklist=["relax", "scf", "band"]).genRunsh()
 ```
 
 When encountering structural calculation failures, such as non-convergence, you can modify parameter settings and generate job submission scripts to rerun the calculations for specific paths. The following code demonstrates how to generate job submission scripts for rerunning the structures under specified paths:
 
 ```python
-from pyhtstack2d.tools.genInput import GenRunDir
-# For single-task job submission rerun
-GenRunDir().failrw()
 
-# For multi-task job submission in nested directories
-from pyhtstack2d.tools.genInput import MulTaskRW
-MulTaskRW(multilevel=4, saveall=True).genRunsh()
 ```
 
 ## 4.5. Batch Extraction and Simple Analysis of Results
@@ -756,9 +601,7 @@ This module extracts optimized structures from `CONTCAR` files by generating a `
 **Use Case**
 
 ```python
-from pyhtstack2d.tools.genInput import OptPOSCAR
-# Generate the getPOSCAR.sh script for batch extraction of optimized structures
-OptPOSCAR().genGetsh()
+
 ```
 
 ### 4.5.2. `pyhtstack2d.tools.genInput.GetMagEntropy`
@@ -774,18 +617,7 @@ This module retrieves magnetic moments and entropy values after VASP calculation
 **Use Cases**
 
 ```python
-from pyhtstack2d.tools.genInput import GetMagEntropy
-# Example: Separate materials based on entropy values
-# - `entxt`: Text file containing entropy data. If not present, entropy information will be extracted from `workdir`.
-# - `entropytol`: Threshold for entropy; materials with higher entropy will be marked for recalculation.
-# - `recalheader`: The path of header for generating job submission scripts, used when recalculating materials.
-GetMagEntropy(magpath="-opt").separateEntropy(entxt="entropy.txt", entropytol=0.001, recalheader="header.sh")
 
-# Example: Separate materials based on magnetic moments
-# - `magtxt`: Text file with total magnetic moment data. If not present, magnetic moment data will be extracted from `workdir`.
-# - `magtol`: Magnetic moment threshold; materials exceeding this threshold will be added to the magnetic materials list.
-# This function generates `maglist.txt` and `nonmaglist.txt` in `workdir`.
-GetMagEntropy(magpath="opt/").separateMag(magtxt="mag.txt", magtol=0.5)
 ```
 
 
@@ -823,15 +655,7 @@ This module is designed for batch extraction and analysis of VASP calculation re
 **Use Cases**
 
 ```python
-from pyhtstack2d.analysis.extractResults import GetResults
-# For monolayers.
-GetResults(scf="scf", band="band", pmg=False, multilevel=4, mag=True)
 
-# For bilayers:
-# Calling `getInfoBi()` will analyze the binding energy and band alignment type.
-# The `getInfoBi()` function requires `monoinfo.json`, which contains monolayer information, to be in the current directory.
-# This function generates `biinfo.json` and `biinfo-simple.json`.
-GetResults(multilevel=4, nlayer=2, infodict="info.json").getInfoBi(monodict="monoinfo.json")
 ```
 
 The keys and associated descriptions of `info.json` are as follows:
@@ -907,18 +731,7 @@ This module is used to plot the band structure.
 **Use Cases**
 
 ```python
-from pyhtstack2d.analysis.plotBAND import plotBS
-import os
-# Example: Using Vaspkit to extract `band.dat` and plot band structure
-plotBS(bandpath=os.getcwd(), pmg=False).plotbsdos()
 
-# Example: Using pymatgen's Vasprun and BSDOSPlotter modules to plot the band structure
-Vasprun = __import__('pymatgen.io.vasp.outputs', fromlist=['Vasprun']).Vasprun
-BSDOSPlotter = __import__('pymatgen.electronic_structure.plotter', fromlist=['BSDOSPlotter']).BSDOSPlotter
-plotBS(bandpath=os.getcwd(), pmg=True, Vasprun=Vasprun, BSDOSPlotter=BSDOSPlotter).plotbsdos()
-
-# Example: Plotting a layer-projected band structure for specified atom indices
-plotBS(bandpath=os.getcwd(), pmg=False, natomlayer1=3, indices=[0, 1, 2, 3, 4, 5]).plotbsdos()
 ```
 
 
@@ -929,37 +742,6 @@ For more illustrative examples, see Examples 1-3 covered in our published papers
 Below, we provide an additional example, demonstrating how to identify monolayers by their band types, and subsequently perform high-throughput stacking to identify combinations that facilitate an indirect-to-direct bandgap transition.
 
 ```python
-# Import necessary modules
-from pyhtstack2d.tools.queryDB import getuid
-import pandas
 
-# Define database path and selection criteria for materials
-database = "../c2db.db"
-criteria_p3m1 = 'natoms=3, dyn_stab=Yes, hform<0, gap>0, layergroup=p3m1, magstate=NM'
-getuid(database, criteria_p3m1, save_csv_path='tmd_p3m1.csv', save_csv=True)
-
-# Load data and separate materials based on direct and indirect bandgap
-tmd_p3m1 = pandas.read_csv('tmd_p3m1.csv')
-tmd_p3m1_uid_indir = []
-for i in range(len(tmd_p3m1)):
-    if abs(tmd_p3m1.iloc[i]['gap'] - tmd_p3m1.iloc[i]['gap_dir']) > 1e-3:
-        tmd_p3m1_uid_indir.append(tmd_p3m1.iloc[i]['uid'])
-
-# Fetch POSCAR files for selected UIDs
-from pyhtstack2d.tools.queryDB import getPOSACRfromuid
-getPOSACRfromuid(database, tmd_p3m1_uid_indir, overwrite=False, save_path='POSCAR_Gind')
-
-# Generate bilayers from indirect bandgap materials
-from pyhtstack2d.buildbilayer.batchStackBilayer import GenBiLayer
-GenBiLayer('POSCAR_Gind', genmode="tmdh", la_mismatch=5.0, homo=True).batch_stack()
-
-# Use vaspkit to prepare POTCAR and KPOINTS for each POSCAR.
-from pyhtstack2d.tools.genInput import GenRunDir, GenMultiSh
-GenRunDir(genmode="vaspkit", posdir="BiPOSCAR_dir", workdir="BiPOSCAR_dir", multilevel=4, taskname="opt", incexis=True).genInputfile()
-
-# Generate batch job submission scripts for optimization, self-consistent field, and band structure calculations
-# Define paths to the INCAR files shared across different types of calculations
-incpath = ["INPUT_file/INCAR-opt", "INPUT_file/INCAR-scf", "INPUT_file/INCAR-band"]
-GenMultiSh(tasklist=["opt", "scf", "band"], workdir="BiPOSCAR_dir", multilevel=4, opts=True, saveall=True, incpath=incpath).genRunsh()
 ```
 
