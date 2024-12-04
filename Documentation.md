@@ -229,30 +229,7 @@ Combining this module with the bilayer stack generation mode enables the creatio
 **Use Case:**
 
 ```python
-from pyhtstack2d.buildbilayer.RotMovePOSCAR import rotate_poscar, move_poscar
 
-# Path to the POSCAR file of a monolayer MoS2
-poscar = "POSCAR/1MoS2-POSCAR"
-
-# Move the atomic positions of the POSCAR file. The moved POSCAR files will be saved in the directory "POSCAR_moved".
-move_poscar(poscar, [0, 0, 0])            # No translation; original position
-move_poscar(poscar, [1/3, -1/3, 0])       # Translate by (1/3, -1/3, 0) in fractional coordinates
-move_poscar(poscar, [-1/3, 1/3, 0])       # Translate by (-1/3, 1/3, 0) in fractional coordinates
-
-# Path to the POSCAR file of a monolayer WS2
-poscar2 = "POSCAR/1WS2-POSCAR" # or "POSCAR/2HfIN-2.vasp"
-
-# Rotate the atomic positions of the POSCAR file. The rotated POSCAR files will be saved in the directory "POSCAR_rotated". 
-rotate_poscar(poscar2, 0)                 # No rotation; original orientation
-rotate_poscar(poscar2, 60)                # Rotate by 60 degrees
-
-from pyhtstack2d.buildbilayer.batchStackBilayer import GenBiLayer
-
-# Generate bilayer stacking configurations using the modified POSCAR files
-# overwrite: If False, do not overwrite existing stacked POSCAR files
-# skip_xy_rev: If True, skip automatic consideration of monolayer rotation for stacking
-GenBiLayer(pos_dir="POSCAR_moved", pos_dir2="POSCAR_rotated", genmode="bilayer",
-           overwrite=False, skip_xy_rev=True).batch_stack()
 ```
 
 ## 4.3. Generating Input Files
