@@ -325,6 +325,30 @@ GenBiLayer(pos_dir="POSCAR_moved", pos_dir2="POSCAR_rotated", genmode="bilayer",
            overwrite=False, skip_xy_rev=True).batch_stack()
 ```
 
+### 4.2.4. `pyhtstack2d.buildbilayer.Hex2Orth`
+
+This module provides a class for converting hexagonal structures to orthorhombic structures.
+
+#### Parameters:
+
+- **`filename`**: Path to the POSCAR file of the hexagonal structure.
+- **`transmat`**: Transformation matrix for converting the hexagonal structure to an orthorhombic structure. Defaults to `[[-1, 1, 0], [-1, -1, 0], [0, 0, 1]]`.
+- **`overwrite`**: Determines whether to overwrite the original POSCAR file. Defaults to `False`.
+
+#### Use Case:
+
+```python
+from pyhtstack2d.buildbilayer.Hex2Orth import transhex2orth
+
+# Convert the hexagonal structure to an orthorhombic structure with the smallest lattice constants.
+transhex2orth(filename="POSCAR", transmat=None, overwrite=False)
+
+import numpy as np
+# Custom transformation matrix
+transmat = np.array([[-2, 0, 0], [-1, -2, 0], [0, 0, 1]])
+transhex2orth(filename="POSCAR", transmat=transmat)
+```
+
 ## 4.3. Generating Input Files
 
 ### Fundamental Parameters
