@@ -354,6 +354,27 @@ transmat = np.array([[3, 2, 0], [-2, 1, 0], [0, 0, 1]])
 transformlattice(filename="MoS2-POSCAR", transmat=transmat)
 ```
 
+### 4.2.5. `pyhtstack2d.buildbilayer.RemvDuplicates`
+
+This module provides a class for removing duplicate structures from a directory of POSCAR files.
+
+#### Parameters:
+
+- **`posdir`**: Directory containing the POSCAR files.
+- **`multist`**: Flag indicating whether there are multiple different systems in the directory. Defaults to `True`.
+- **`threshold`**: Tolerance for comparing the structures. Defaults to `1e-2`.
+- **`deleteempty`**: Flag indicating whether to delete empty directories. Defaults to `True`.
+
+#### Example Usage:
+
+```python
+from pyhtstack2d.buildbilayer.RemvDuplicates import remove_duplicates
+
+# Remove duplicate structures from the directory "BiPOSCAR_dir"
+remove_duplicates("BiPOSCAR_dir")
+```
+
+
 ## 4.3. Generating Input Files
 
 ### Fundamental Parameters
