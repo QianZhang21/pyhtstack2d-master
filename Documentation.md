@@ -974,6 +974,8 @@ plotBS(bandpath=os.getcwd(), pmg=False, natomlayer1=3, indices=[0, 1, 2, 3, 4, 5
 
 # 5. High-throughput illustrative examples
 
+## 5.1. Hexagonal crystal systems containing 3 atoms monolayers
+
 For more illustrative examples, see Examples 1-3 covered in our published papers.
 
 Below, we provide an additional example, demonstrating how to identify monolayers by their band types, and subsequently perform high-throughput stacking to identify combinations that facilitate an indirect-to-direct bandgap transition.
@@ -1013,3 +1015,8 @@ incpath = ["INPUT_file/INCAR-opt", "INPUT_file/INCAR-scf", "INPUT_file/INCAR-ban
 GenMultiSh(tasklist=["opt", "scf", "band"], workdir="BiPOSCAR_dir", multilevel=4, opts=True, saveall=True, incpath=incpath).genRunsh()
 ```
 
+## 5.2. Homocrystalline system with multiple atomic number monolayers
+
+The above examples all limit the need for all monolayers to have the same number of atoms and crystal system, and here an example is given that allows stacking between monolayers of the same crystal system, but without limiting the number of atoms.
+
+To be continued and will be added soon.
