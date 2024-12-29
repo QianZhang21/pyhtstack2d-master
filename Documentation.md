@@ -325,6 +325,8 @@ GenBiLayer(pos_dir="POSCAR_moved", pos_dir2="POSCAR_rotated", genmode="bilayer",
            overwrite=False, skip_xy_rev=True).batch_stack()
 ```
 
+> **Note:** The rotation is a pseudo-rotation that only rotates the atomic coordinates and only facilitates stacking.
+
 ### 4.2.4. `pyhtstack2d.buildbilayer.TransLattice`
 
 This module provides a class for transforming the lattice, such as converting a hexagonal structure to an orthorhombic structure, or constructing a non-integer supercell.
