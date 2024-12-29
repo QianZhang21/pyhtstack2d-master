@@ -325,7 +325,7 @@ GenBiLayer(pos_dir="POSCAR_moved", pos_dir2="POSCAR_rotated", genmode="bilayer",
            overwrite=False, skip_xy_rev=True).batch_stack()
 ```
 
-> **Note:** The rotation is a pseudo-rotation that only rotates the atomic coordinates and only facilitates stacking.
+> **Note:** The rotation is a pseudo-rotation that only rotates the atomic coordinates and only facilitates stacking. For example, hexagonal cells can only be rotated 60, 120 and 180 degrees, other angles will change the original structure.
 
 ### 4.2.4. `pyhtstack2d.buildbilayer.TransLattice`
 
