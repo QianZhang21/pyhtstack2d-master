@@ -1,0 +1,110 @@
+{
+    "scf": {
+        "LWAVE": ".TRUE.",
+        "LCHARG": ".TRUE.",
+        "ISMEAR": 0,
+        "SIGMA": 0.05,
+        "LREAL": ".FALSE.",
+        "ENCUT": 500,
+        "ALGO": "Normal",
+        "PREC": "Normal",
+        "EDIFF": 1e-06,
+        "NELM": 300,
+        "ISIF": 2,
+        "ISPIN": 1,
+        "ISYM": 0,
+        "NSW": 0
+    },
+
+    "relax": {
+        "LWAVE": ".FALSE.",
+        "LCHARG": ".FALSE.",
+        "ISIF": 3,
+        "IBRION": 2,
+        "NSW": 300,
+        "POTIM": 0.01,
+        "EDIFFG": -0.01
+    },
+
+    "band": {
+        "LWAVE": ".FALSE.",
+        "LCHARG": ".FALSE.",
+        "ICHARG": 11,
+        "LORBIT": 11,
+        "NEDOS": 3001
+    },
+
+    "optic": {
+        "LOPTICS": ".TRUE.",
+        "CSHIFT": 0.100,
+        "NBANDS": 120,
+        "NEDOS": 3001
+    },
+
+    "esp": {
+        "LVHAR": ".TRUE."
+    },
+
+    "dip": {
+        "LDIPOL": ".TRUE.",
+        "IDIPOL": 3,
+        "DIPOL": [
+            0.5,
+            0.5,
+            0.5
+        ]
+    },
+
+    "hse06": {
+        "LHFCALC": ".TRUE.",
+        "HFSCREEN": 0.2,
+        "AEXX": 0.25,
+        "ALGO": "Damped",
+        "TIME": 0.4
+    },
+
+    "d2": {
+        "IVDW": 1
+    },
+    "d3":{
+        "IVDW": 11
+    },
+    "d3bj": {
+        "IVDW": 12
+    },
+    "optpbe": {
+        "LUSE_VDW": ".TRUE.",
+        "AGGAC": 0.0,
+        "GGA": "OR"
+    },
+    "optb88": {
+        "LUSE_VDW": ".TRUE.",
+        "AGGAC": 0.0,
+        "GGA": "BO",
+        "PARAM1": 0.1833333333,
+        "PARAM2": 0.2200000000
+    },
+    "optb86b": {
+        "LUSE_VDW": ".TRUE.",
+        "AGGAC": 0.0,
+        "GGA": "MK",
+        "PARAM1": 0.1234,
+        "PARAM2": 1.0
+    },
+    "soc": {
+        "LSORBIT": ".TRUE.",
+        "GGA_COMPAT": ".FALSE.",
+        "VOSKOWN": 1,
+        "LMAXMIX": 4
+    },
+    "LISTPara": [
+            "LDAUU",
+            "LDAUL",
+            "LDAUJ",
+            "MAGMOM",
+            "DIPOL",
+            "LANGEVIN_GAMMA",
+            "QUAD_EFG",
+            "EINT"
+        ]
+}

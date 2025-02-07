@@ -1,0 +1,46 @@
+Mixing_Type:           broyden
+Mixing_MaxDim:         6
+Mixing_Variable:       density
+Mixing_StepLength:     0.3
+
+Extra_States:          10
+Temperature:           300
+SCF_Phi_MaxIter:       15
+SCF_Phi_Tolerance:     1e-6
+SCF_Outer_MaxIter:     50
+SCF_Outer_Tolerance:   1e-6
+SCF_Inner_MaxIter:     1
+SCF_Inner_Tolerance:   1e-6
+Eig_MaxIter:           3
+Eig_Tolerance:         1e-13
+EXX_Divergence_Type:   0
+
+XC_Type:               XC_GGA_XC_PBE
+
+Hybrid_ACE:            0
+
+Pseudo_Type:           ONCV
+Use_VLocal:            1
+Use_Atom_Density:      1
+Use_Real_Space:        0
+Use_Sphere_Cut:        1
+
+PW_Solver:             LOBPCG
+
+ScaLAPACK_Block_Size:  1
+Group_Size_Kpoint:     1
+Block_Size_Grid:       1
+Block_Size_State:      1
+
+Ecut_Wavefunction:     9.1875
+Density_Grid_Factor:   2.0
+LGL_Grid_Factor:       1.0
+FFT_Number_Type:       even
+
+Calculate_Force_Each_SCF:    0
+
+Kpoint_Grid: [ 1, 1, 1, 0, 0, 0 ]
+
+Spin_Type:             1
+Spin_Orbit_Coupling:       0
+Spin_Axis:                 [0, 0, 1]
