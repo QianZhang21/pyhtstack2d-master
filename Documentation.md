@@ -43,7 +43,7 @@ To install **PyHTStack2D**, you have two options:
 
 ### Option 2: Install from Wheel
 
-1. Download `dist/pyhtstack2d-0.1-py3-none-any.whl` and `dist/install_with_config.py`.
+1. Download `dist/pyhtstack2d-0.1-py3-none-any.whl` and `install_with_config.py`.
 
 2. Run the following command to install with configuration:
    
