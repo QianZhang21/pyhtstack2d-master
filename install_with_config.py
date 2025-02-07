@@ -61,7 +61,8 @@ def configure_and_install():
     else:
         print("\nSkipping recommended dependencies installation.")
 
-    subprocess.run(["pip", "install", "./dist/pyhtstack2d-0.1-py3-none-any.whl"])
+    subprocess.run(["pip", "install", "./dist/pyhtstack2d-0.1-py3-none-any.whl"])  # The location of the WHL file is subject to change on a case-by-case basis.
+
 
 if __name__ == "__main__":
     configure_and_install()
