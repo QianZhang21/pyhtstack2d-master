@@ -530,7 +530,7 @@ VaspkitInputWriter(posdir="BiPOSCAR_dir",taskname="scf").write_input_multi_pos()
 
 ### 4.3.6. `pyhtstack2d.tools.genInput.GenRunDir`
 
-This module is designed for batch generation of input files for VASP calculations, with flexible settings for handling various submission and directory structures.
+This module is designed for batch generation of input files, with flexible settings for handling various submission and directory structures.
 
 **Parameters**
 
