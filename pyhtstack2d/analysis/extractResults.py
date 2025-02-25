@@ -336,6 +336,8 @@ class GetResults:
 
         for material in self.materials:
             material = material.strip()
+            if material.endswith("/"):
+                material = material[:-1]
             posfile = "CONTCAR"
             stfile = os.path.join(self.workdir, material.strip(), posfile)
             if not os.path.exists(stfile):
@@ -383,7 +385,7 @@ class GetResults:
         with open(self.infosavefile, "w") as f:
             json.dump(self.info_dict, f, cls=NumpyEncoder)
 
-    def getInfoBi(self, monodict, natomlayer1=3, hybrid=False, overwrite=True):
+    def getInfoBi(self, monodict, bimondict=None, natomlayer1=3, hybrid=False, overwrite=True):
         """
         Organize the dictionary for bilayer materials.
 
@@ -391,6 +393,7 @@ class GetResults:
             monodict: dict, the dictionary of monolayer materials. Two types of dictionaries are supported:
                 1.  {"1MoS2": {"label": SMoS, ...}}, the directory name as the key and contains "label" information.
                 2.  {"SMoS": {"material": "1MoS2", ...}}, the label as the key and contains "material" information.
+            bimondict: dict, the dictionary of monolayer materials contained in bilayer materials.
             natomlayer1: int, the number of atoms in the first layer.
             hybrid: bool, whether to plot the hybrid band structure.
             overwrite: bool, whether to overwrite the existing dictionary of bilayer materials.
@@ -400,6 +403,7 @@ class GetResults:
                 os.mkdir(os.path.join(self.workdir, "LayerBand_dir"))
 
         monodicttype = None
+        bimondictload = None
         if os.path.exists(os.path.join(self.workdir, monodict)):
             with open(os.path.join(self.workdir, monodict), "r") as f:
                 mono_dict = json.load(f)
@@ -411,25 +415,30 @@ class GetResults:
         if monodicttype is None:
             warnings.warn(f"The monolayer info_dict file {monodict} does not exist.")
         else:
-            self.infomono_dict = {}
-            if monodicttype == "material":
-                for mono, monoinfo in mono_dict.items():
-                    if mono not in self.infomono_dict:
-                        self.infomono_dict[mono] = monoinfo
-                        if "elements" in monoinfo:
-                            mono_inv = "".join(monoinfo["elements"][::-1])
-                            if mono_inv != mono:
-                                self.infomono_dict[mono_inv] = monoinfo
+            if bimondict is not None and os.path.exists(os.path.join(self.workdir, bimondict)):
+                with open(os.path.join(self.workdir, bimondict), "r") as f:
+                    bimondictload = json.load(f)
+                self.infomono_dict = mono_dict
             else:
-                for mono, monoinfo in mono_dict.items():
-                    label = monoinfo["label"]
-                    if label not in self.infomono_dict:
-                        self.infomono_dict[label] = monoinfo
-                        self.infomono_dict[label]["material"] = mono
-                        if "elements" in monoinfo:
-                            mono_inv = "".join(monoinfo["elements"][::-1])
-                            if mono_inv != label:
-                                self.infomono_dict[mono_inv] = monoinfo
+                self.infomono_dict = {}
+                if monodicttype == "material":
+                    for mono, monoinfo in mono_dict.items():
+                        if mono not in self.infomono_dict:
+                            self.infomono_dict[mono] = monoinfo
+                            if "elements" in monoinfo:
+                                mono_inv = "".join(monoinfo["elements"][::-1])
+                                if mono_inv != mono:
+                                    self.infomono_dict[mono_inv] = monoinfo
+                else:
+                    for mono, monoinfo in mono_dict.items():
+                        label = monoinfo["label"]
+                        if label not in self.infomono_dict:
+                            self.infomono_dict[label] = monoinfo
+                            self.infomono_dict[label]["material"] = mono
+                            if "elements" in monoinfo:
+                                mono_inv = "".join(monoinfo["elements"][::-1])
+                                if mono_inv != label:
+                                    self.infomono_dict[mono_inv] = monoinfo
 
         infokeys = list(self.info_dict.values())[0].keys()
         required_keys = ["elements", "natoms", "atom_indices", "zdiff", "Efermi", "E0"]
@@ -491,8 +500,12 @@ class GetResults:
                     self.infobi_dict[materialid]["natomlayer1"] = natomlayer1
 
                 if natomlayer1:
-                    bl1label = "".join(material_data["elements"][:natomlayer1])
-                    bl2label = "".join(material_data["elements"][natomlayer1:])
+                    if bimondictload:
+                        bl1label = bimondictload[material_parts[0]][0]
+                        bl2label = bimondictload[material_parts[0]][1]
+                    else:
+                        bl1label = "".join(material_data["elements"][:natomlayer1])
+                        bl2label = "".join(material_data["elements"][natomlayer1:])
                     self.infobi_dict[materialid]["natomlayer1"] = natomlayer1
                     self.infobi_dict[materialid]["blabel"] = material_data["label"]
                     self.infobi_dict[materialid]["bl1label"] = bl1label
