@@ -270,12 +270,20 @@ class GetResults:
         Get the material file.
         """
         getsh = os.path.join(self.workdir, "getmaterial.sh")
+        if self.scf != "" and self.scf.endswith("/"):
+            scfdir = self.scf
+        elif self.scf != "":
+            scfdir = self.scf + "/"
+        else:
+            scfdir = ""
         with open(getsh, "w", newline="\n") as f:
             f.write("#!/bin/bash\n\n")
             f.write(f"rm -f {self.materialfile}\n\n")
             if self.multilevel is None:
                 f.write("for file in $(ls -d */); do\n")
-                f.write(f"    echo $file >> {self.materialfile}\n")
+                f.write(f"    if [ -f $file/{scfdir}OUTCAR ] && [ `grep -c \"reached\" $file/{scfdir}OUTCAR` -ne 0 ] && [ `grep -c \"Voluntary\" $file/{scfdir}OUTCAR` -ne 0 ]; then\n")
+                f.write(f"        echo $file >> {self.materialfile}\n")
+                f.write("    fi\n")
                 f.write("done\n")
             else:
                 file_path = "$file"
@@ -287,8 +295,11 @@ class GetResults:
                     f.write("    " * level_i + f"    for file_{level_i} in $(ls -d */)\n")
                     f.write("    " * level_i + "    do\n")
                     f.write("    " * level_i + f"        cd $file_{level_i}\n")
+
+                f.write("    " * (self.multilevel - 2) + f"        if [ -f {scfdir}OUTCAR ] && [ `grep -c \"reached\" {scfdir}OUTCAR` -ne 0 ] && [ `grep -c \"Voluntary\" {scfdir}OUTCAR` -ne 0 ]; then\n")
                 f.write("    " * (
                             self.multilevel - 2) + f"                echo {file_path} >> {cd_com}{self.materialfile}\n")
+                f.write("    " * (self.multilevel - 2) + "        fi\n")
                 for level_i in range(self.multilevel - 1):
                     f.write("    " * (self.multilevel - 2 - level_i) + "        cd ..\n")
                     f.write("    " * (self.multilevel - 2 - level_i) + "    done\n")
