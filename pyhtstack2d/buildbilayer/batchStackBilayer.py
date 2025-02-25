@@ -1,3 +1,4 @@
+import json
 import os
 
 from .stackBilayer import Monolayer, Bilayer, TMDHBilayer, N2Bilayer, MNXYBilayer, \
@@ -54,9 +55,9 @@ class GenBiLayer:
         assert genmode.lower() in gen_modes.keys(), f"genmode should be one of {gen_modes.keys()}"
 
         self.single_dir = True
-        self.pos_obj, self.la, self.lb = self.get_pos_inf(pos_dir)
+        self.pos_obj, self.la, self.lb, self.posfilename = self.get_pos_inf(pos_dir)
         if pos_dir2:
-            self.pos_obj2, self.la2, self.lb2 = self.get_pos_inf(pos_dir2)
+            self.pos_obj2, self.la2, self.lb2, self.posfilename2 = self.get_pos_inf(pos_dir2)
             self.single_dir = False
 
         self.genmode = genmode.lower()
@@ -96,21 +97,24 @@ class GenBiLayer:
         pos_obj = []
         la = []
         lb = []
+        posfilename = []
         if isinstance(pos_dir, str):
             for pos_file in os.listdir(pos_dir):
+                posfilename.append(pos_file)
                 momolayer = Monolayer(os.path.join(pos_dir, pos_file))
                 pos_obj.append(momolayer)
                 la.append(momolayer.a)
                 lb.append(momolayer.b)
         elif isinstance(pos_dir, list):
             for pos_file in pos_dir:
+                posfilename.append(pos_file)
                 momolayer = Monolayer(pos_file)
                 pos_obj.append(momolayer)
                 la.append(momolayer.a)
                 lb.append(momolayer.b)
         else:
             raise ValueError("pos_obj should be a string or a list of strings")
-        return pos_obj, la, lb
+        return pos_obj, la, lb, posfilename
 
     def match_pos(self):
         match_pos_dicr = {}
@@ -152,6 +156,7 @@ class GenBiLayer:
         return match_pos_dicr
 
     def batch_stack(self):
+        bimondict = {}
         for mono1_index in self.match_pos_dict.keys():
             mono1 = self.pos_obj[mono1_index]
             if self.single_dir:
@@ -165,7 +170,9 @@ class GenBiLayer:
                         lv = 50.0
                     else:
                         lv = 30.0
-                    gen_modes[self.genmode](st1=mono1, st2=mono2, lv=lv, **self.kwargs).WritePOSCAR()
+                    genbi = gen_modes[self.genmode](st1=mono1, st2=mono2, lv=lv, **self.kwargs)
+                    genbi.WritePOSCAR()
+                    bimondict[genbi.formula_w] = [self.posfilename[mono1_index].split('-')[0], self.posfilename[mono2_index].split('-')[0]]
             else:
                 for mono2_index in self.match_pos_dict[mono1_index]:
                     mono2 = self.pos_obj2[mono2_index]
@@ -177,10 +184,15 @@ class GenBiLayer:
                         lv = 50.0
                     else:
                         lv = 30.0
-                    gen_modes[self.genmode](st1=mono1, st2=mono2, lv=lv, **self.kwargs).WritePOSCAR()
+                    genbi = gen_modes[self.genmode](st1=mono1, st2=mono2, lv=lv, **self.kwargs)
+                    genbi.WritePOSCAR()
+                    bimondict[genbi.formula_w] = [self.posfilename[mono1_index].split('-')[0], self.posfilename2[mono2_index].split('-')[0]]
 
         savedir = gen_modes[self.genmode](self.pos_obj[0], **self.kwargs).savepath
         print(f"Stacking of bilayers is completed. The POSCAR files are saved in the {savedir} directory.")
+
+        with open(f"{savedir}/bimondict.json", "w") as f:
+            json.dump(bimondict, f)
 
     @staticmethod
     def get_kwargs():
