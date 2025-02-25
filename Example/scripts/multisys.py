@@ -177,6 +177,7 @@ for full_path in full_path_list:
 # =============================================================================
 import os
 import shutil
+import json
 import numpy as np
 from pyhtstack2d.buildbilayer.batchStackBilayer import GenBiLayer
 from pyhtstack2d.buildbilayer.RotMovePOSCAR import rotate_poscar, move_poscar
@@ -195,30 +196,8 @@ class Bilayer_modify(Bilayer):
         return np.array(
             [[la_mean, 0, 0], [lb_mean * angle1, lb_mean * np.sqrt(1 - angle1 ** 2), 0], [0, 0, self.lv]])
 
-class GenBiLayer_modify(GenBiLayer):
-    def get_pos_inf(self, pos_dir):
-        pos_obj = []
-        la = []
-        lb = []
-        self.posfilename = []
-        if isinstance(pos_dir, str):
-            for pos_file in os.listdir(pos_dir):
-                self.posfilename.append(pos_file)
-                momolayer = Monolayer(os.path.join(pos_dir, pos_file))
-                pos_obj.append(momolayer)
-                la.append(momolayer.a)
-                lb.append(momolayer.b)
-        elif isinstance(pos_dir, list):
-            for pos_file in pos_dir:
-                self.posfilename.append(pos_file)
-                momolayer = Monolayer(pos_file)
-                pos_obj.append(momolayer)
-                la.append(momolayer.a)
-                lb.append(momolayer.b)
-        else:
-            raise ValueError("pos_obj should be a string or a list of strings")
-        return pos_obj, la, lb
 
+class GenBiLayer_modify(GenBiLayer):
     def batch_stack(self):
         for mono1_index in self.match_pos_dict.keys():
             mono1 = self.pos_obj[mono1_index]
@@ -233,7 +212,9 @@ class GenBiLayer_modify(GenBiLayer):
                         lv = 50.0
                     else:
                         lv = 30.0
-                    Bilayer_modify(st1=mono1, st2=mono2, lv=lv, **self.kwargs).WritePOSCAR()
+                    genbi = Bilayer_modify(st1=mono1, st2=mono2, lv=lv, **self.kwargs)
+                    genbi.WritePOSCAR()
+                    formula_w = genbi.formula_w
             else:
                 for mono2_index in self.match_pos_dict[mono1_index]:
                     mono2 = self.pos_obj2[mono2_index]
@@ -245,19 +226,24 @@ class GenBiLayer_modify(GenBiLayer):
                         lv = 50.0
                     else:
                         lv = 30.0
-                    Bilayer_modify(st1=mono1, st2=mono2, lv=lv, **self.kwargs).WritePOSCAR()
+                    genbi = Bilayer_modify(st1=mono1, st2=mono2, lv=lv, **self.kwargs)
+                    genbi.WritePOSCAR()
+                    formula_w = genbi.formula_w
 
         savedir = Bilayer_modify(self.pos_obj[0], **self.kwargs).savepath
         print(f"Stacking of bilayers is completed. The POSCAR files are saved in the {savedir} directory.")
+        return formula_w
 
 
-bi = GenBiLayer_modify("Hexagonal_POSCAR_dir", la_mismatch=0.5)
+posdir = "Hexagonal_POSCAR_dir"
+bi = GenBiLayer_modify(posdir, la_mismatch=0.5)
 bidict = bi.match_pos_dict
 biobjec = bi.posfilename
+bimondictsave = {}
 for mono1_index in bidict.keys():
-    mono1 = os.path.join("Hexagonal_POSCAR_dir", biobjec[mono1_index])
+    mono1 = os.path.join(posdir, biobjec[mono1_index])
     for mono2_index in bidict[mono1_index]:
-        mono2 = os.path.join("Hexagonal_POSCAR_dir", biobjec[mono2_index])
+        mono2 = os.path.join(posdir, biobjec[mono2_index])
         if os.path.exists("POSCAR_moved"):
             # os.removedirs("POSCAR_moved")
             shutil.rmtree("POSCAR_moved")
@@ -271,8 +257,12 @@ for mono1_index in bidict.keys():
         move_poscar(mono1, [-1 / 3, 1 / 3, 0])
         rotate_poscar(mono2, 0)
         rotate_poscar(mono2, 60)
-        GenBiLayer_modify(pos_dir="POSCAR_moved", pos_dir2="POSCAR_rotated", genmode="bilayer",
+        formula_w = GenBiLayer_modify(pos_dir="POSCAR_moved", pos_dir2="POSCAR_rotated", genmode="bilayer",
                           overwrite=False, skip_xy_rev=True).batch_stack()
+        print(formula_w)
+        bimondictsave[formula_w] = [biobjec[mono1_index].split('-')[0], biobjec[mono2_index].split('-')[0]]
+        with open("bimondict.json", "w") as f:
+            json.dump(bimondictsave, f)
 # =============================================================================
 
 
