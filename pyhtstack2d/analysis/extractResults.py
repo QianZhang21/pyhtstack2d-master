@@ -518,7 +518,7 @@ class GetResults:
                             l2E0 = self.infomono_dict[bl2label]["E0"]
                             self.infobi_dict[materialid]["l1info"] = {"E0": l1E0}
                             self.infobi_dict[materialid]["l2info"] = {"E0": l2E0}
-                            self.infobi_dict[materialid]["Eb"] = [material_data["E0"] - l1E0 - l2E0]
+                            self.infobi_dict[materialid]["Ef"] = [material_data["E0"] - l1E0 - l2E0]
                             la1 = self.infomono_dict[bl1label]["abc"][0]
                             la2 = self.infomono_dict[bl2label]["abc"][0]
                             self.infobi_dict[materialid]["mismatchopt"] = 2 * abs(la1 - la2) / (la1 + la2)
@@ -596,10 +596,10 @@ class GetResults:
                     self.infobi_dict[materialid]["is_metals"].append(ismetalb)
                     vbmpro_l1, vbmpro_l2, cbmpro_l1, cbmpro_l2 = sumpro(material_data, materialid, natomlayer1)
 
-                if "Eb" in self.infobi_dict[materialid].keys():
+                if "Ef" in self.infobi_dict[materialid].keys():
                     l1E0 = self.infobi_dict[materialid]["l1info"]["E0"]
                     l2E0 = self.infobi_dict[materialid]["l2info"]["E0"]
-                    self.infobi_dict[materialid]["Eb"].append(material_data["E0"] - l1E0 - l2E0)
+                    self.infobi_dict[materialid]["Ef"].append(material_data["E0"] - l1E0 - l2E0)
 
             if "band" in infokeys:
                 if vbmpro_l1 is not None:
@@ -647,7 +647,7 @@ class GetResults:
                 bisimple_dict[materialid]["mismatchopt"] = material_data["mismatchopt"]
             bisimple_dict[materialid].update({
                 "stackmode": material_data["stackmode"],
-                "Eb": material_data["Eb"],
+                "Ef": material_data["Ef"],
                 "dinterlayer": material_data["dinterlayer"]
             })
             if "bandalignment" in infokeys:
