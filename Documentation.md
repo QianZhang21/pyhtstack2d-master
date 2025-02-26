@@ -927,7 +927,7 @@ The special keys and associated descriptions of `biinfo.json` are as follows:
 | `bl1label` or `bl2label` | Label for the first or second layer                                                          |
 | `l1info` or `l2info` | Information for the first or second layer                                                        |
 | `stackmode`       | Stacking mode of the bilayer                                                                         |
-| `Eb`              | Binding energy of the bilayer                                                                        |
+| `Ef`              | Formation energy of the bilayer                                                                        |
 | `dinterlayer`     | Interlayer spacing between the two layers                                                            |
 | `vbmprosum` or `cbmprosum` | Layer-summed atomic projection contributions at the VBM or CBM                              |
 | `bandalignment`   | Type of band alignment                                                                               |
