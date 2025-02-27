@@ -431,7 +431,7 @@ This module generates input files for VASP (Vienna Ab initio Simulation Package)
 
 **Special Parameters**
 
-- **`inputOpt`**: Specifies the calculation mode, with options including `'relax'`, `'scf'`, `'band'`, `'optic'`, and `'eps'` (electrostatic potential). Additional suffixes denote specific functional or correction types:
+- **`inputOpt`**: Specifies the calculation mode, with options including `'relax'`, `'scf'`, `'band'`, `'dos'`, `'optic'`, and `'eps'` (electrostatic potential). Additional suffixes denote specific functional or correction types:
   - `-hse06`: HSE06 hybrid functional
   - `-pu`: DFT+U
   - `-dip`: Dipole correction
@@ -458,6 +458,10 @@ from glob import glob
 # Example: Generate VASP input files with DFT-D3 no-damping correction for a static calculation
 filenames = glob(os.path.join("POSCAR_dir", "*"))
 InputWriter(filenames, inputOpt='scf-d3-dip', kmeshrv=0.04).write_input()
+
+# Example: Generate VASP input files for accurate DOS calculations
+filenames = glob(os.path.join("POSCAR_dir", "*"))
+InputWriter(filenames, inputOpt='dos', kmeshrv=0.02).write_input()
 
 # Example: For nested directories and multi-task calculations
 # When POSCAR files are stored in nested directories, use `write_input_multi_pos()` instead of `write_input()`
@@ -767,13 +771,13 @@ The parameters **`multilevel`**, **`subset`**, **`mpirun`**, **`vasp`**, and **`
 
 ```python
 from pyhtstack2d.tools.genInput import GenMultiSh
-# Example: Generate job submission script with all output files saved for tasks "relax", "scf", and "band"
-GenMultiSh(tasklist=["relax", "scf", "band"], saveall=True).genRunsh()
+# Example: Generate job submission script with all output files saved for tasks "relax", "scf", "dos", and "band"
+GenMultiSh(tasklist=["relax", "scf", "dos", "band"], saveall=True).genRunsh()
 
 # Example: When INCAR and KPOINTS files are shared across all materials
-incpath = ["Inputfiles/INCAR-relax", "Inputfiles/INCAR-scf", "Inputfiles/INCAR-band"]
-kppath = ["Inputfiles/KPOINTS-relax", "Inputfiles/KPOINTS-scf", "Inputfiles/KPOINTS-band"]
-GenMultiSh(tasklist=["relax", "scf", "band"], incpath=incpath, kppath=kppath).genRunsh()
+incpath = ["Inputfiles/INCAR-relax", "Inputfiles/INCAR-scf", "Inputfiles/INCAR-dos", "Inputfiles/INCAR-band"]
+kppath = ["Inputfiles/KPOINTS-relax", "Inputfiles/KPOINTS-scf", "Inputfiles/KPOINTS-scf",  "Inputfiles/KPOINTS-band"]
+GenMultiSh(tasklist=["relax", "scf", "dos", "band"], incpath=incpath, kppath=kppath).genRunsh()
 
 # Example: For Quantum Espresso (QE) multi-task calculations
 from pyhtstack2d.tools.genInput import GenMultiQESh
@@ -974,6 +978,38 @@ plotBS(bandpath=os.getcwd(), pmg=False, natomlayer1=3, indices=[0, 1, 2, 3, 4, 5
 ```
 
 
+### 4.5.5. `pyhtstack2d.analysis.plotDOS`
+
+This module is used to plot the Projected Density of States (PDOS).
+
+#### **Parameters**
+
+- **`path`** (`str`): Path to the file containing the DOS calculation.
+- **`e_range`** (`tuple`, optional): The energy range `(min, max)` to plot the DOS data. Default is `(-3, 3)`.
+
+#### **Usage Examples**
+
+```python
+from pyhtstack2d.analysis.plotDOS import plotDOS
+
+# Example 1: Plotting the DOS for a given material
+plotDOS(path="MoS2/dos").plot_dos()
+
+# Example 2: Plotting the DOS for multiple materials in a high-throughput calculation
+# The `mid.txt` file should contain paths to completed DOS calculations, for example:
+# ==========================
+# MoS2/dos
+# WS2/dos
+# MoSe2/dos
+# ==========================
+midtxt = "mid.txt"
+with open(midtxt, 'r') as f:
+    for line in f:
+        path = line.strip()
+        plotDOS(path=path).plot_dos()
+```
+
+
 # 5. High-throughput illustrative examples
 
 ## 5.1. Hexagonal crystal systems containing 3 atoms monolayers
@@ -1017,7 +1053,60 @@ incpath = ["INPUT_file/INCAR-opt", "INPUT_file/INCAR-scf", "INPUT_file/INCAR-ban
 GenMultiSh(tasklist=["opt", "scf", "band"], workdir="BiPOSCAR_dir", multilevel=4, opts=True, saveall=True, incpath=incpath).genRunsh()
 ```
 
-## 5.2. Homocrystalline system with multiple atomic number monolayers
+## 5.2. Consider and compare different vdW corrections
+```python
+# =============================================================================
+# Step 1: Generate input files for VASP calculations
+from pyhtstack2d.calcSets.vaspSetsWriter import InputWriter
+import os
+from glob import glob
+filenames = glob(os.path.join("POSCAR_dir", "*"))
+InputWriter(filenames, inputOpt='scf-d2-dip', taskname="d2").write_input()
+InputWriter(filenames, inputOpt='scf-d3-dip', taskname="d3").write_input()
+InputWriter(filenames, inputOpt='scf-d3bj-dip', taskname="d3bj").write_input()
+# =============================================================================
+
+# =============================================================================
+# Step 2: Generate job submission script for different vdW corrections
+from pyhtstack2d.tools.genInput import GenMultiSh
+GenMultiSh(tasklist=["d2", "d3", "d3bj"], saveall=True).genRunsh()
+# =============================================================================
+
+# =============================================================================
+# Step 3: Run VASP calculations
+# Run VASP calculations using the generated job submission script
+# =============================================================================
+
+# =============================================================================
+# Step 4: Extract results from VASP output files
+from pyhtstack2d.analysis.extractResults import GetResults
+# The results will be saved in info.json, info1.json, info2.json, respectively
+GetResults(scf="d2")
+GetResults(scf="d3")
+GetResults(scf="d3bj")
+# =============================================================================
+
+# =============================================================================
+# Step 5: Compare the results, such as the energy of the materials
+import json
+
+with open("info.json", "r") as f:
+    d2data = json.load(f)
+
+with open("info1.json", "r") as f:
+    d3data = json.load(f)
+
+with open("info2.json", "r") as f:
+    d3bjdata = json.load(f)
+
+for mid, item in d2data.items():
+    print(f"Material ID: {mid}, the d2-corrected energy is {item['E0']} eV, "
+          f"the d3-corrected energy is {d3data[mid]['E0']} eV, "
+          f"the d3bj-corrected energy is {d3bjdata[mid]['E0']} eV")
+# =============================================================================
+```
+
+## 5.3. Homocrystalline system with multiple atomic number monolayers
 
 The above examples all limit the need for all monolayers to have the same number of atoms and crystal system, and here an example is given that allows stacking between monolayers of the same crystal system, but without limiting the number of atoms.
 
