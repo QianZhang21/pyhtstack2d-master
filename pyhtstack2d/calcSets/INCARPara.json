@@ -31,6 +31,14 @@
         "LORBIT": 11,
         "NEDOS": 3001
     },
+    "dos": {
+        "LWAVE": ".FALSE.",
+        "LCHARG": ".FALSE.",
+        "ISTART": 1,
+        "ICHARG": 11,
+        "LORBIT": 11,
+        "NEDOS": 3001
+    },
     "optic": {
         "LOPTICS": ".TRUE.",
         "CSHIFT": 0.100,
