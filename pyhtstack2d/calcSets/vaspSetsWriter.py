@@ -131,7 +131,7 @@ class INCARSet:
         stfile: str, default=None
             Path to the POSCAR file.
         inputOpt: str, default="scf"
-            The calculation mode of VASP. The basic modes available are 'relax', 'scf', 'band', 'optic', 'eps' (electrostatic potential).
+            The calculation mode of VASP. The basic modes available are 'relax', 'scf', 'band', 'dos', 'optic', 'eps' (electrostatic potential).
             Some additional suffixes are available: '-hse06' (HSE06 hybrid functional), '-pu' (DFT + U),
             '-dip' (Dipole correction), <'-d2', '-d3', '-d3bj', '-optpbe', '-optb88', '-optb86b'> (vdW correction).
             For example, 'scf-d3' means the DFT-D3 no-damping correction static calculation.
