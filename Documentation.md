@@ -189,6 +189,106 @@ scaling_matrix = [2, 2, 1]
 build_supercell(stfile=stfile, scaling_matrix=scaling_matrix)
 ```
 
+
+### 4.1.6 Materials Project API
+The `pymatgen` library provides an interface to the **Materials Project API**, enabling users to retrieve materials data from the **Materials Project** database.
+
+This section provides a Python script to:
+- Download **specific** materials by their `mp-id` and save them as **POSCAR** files.
+- Query materials **based on specific criteria** (e.g., band gap, density, space group) and save them as **POSCAR** files.
+
+---
+
+## **🔹 Prerequisites**
+Before using the code, ensure that:
+1. You have an **API Key** from [Materials Project](https://materialsproject.org/) (Sign up & get an API key).
+2. Install `pymatgen` in your Python environment:
+   ```bash
+   pip install pymatgen
+    ```
+3.	Replace "your_api_key_here" with your actual Materials Project API Key.
+
+**Code: Retrieving and Saving POSCAR Files**
+```python
+from pymatgen.ext.matproj import MPRester
+from pymatgen.io.vasp import Poscar
+import os
+
+if not os.path.exists("POSCAR_dir"):
+    os.mkdir("POSCAR_dir")
+    
+# Your Materials Project API Key (Replace this with your actual key)
+API_KEY = "your_api_key_here"
+
+def download_and_save_poscars(mpr, material_ids):
+    """
+    Download structures from Materials Project and save them as POSCAR files.
+
+    Parameters:
+        mpr (MPRester): Active connection to Materials Project API.
+        material_ids (list): List of material IDs (e.g., ["mp-149", "mp-13"]).
+
+    Saves:
+        POSCAR files named as 'POSCAR_<material_id>'.
+    """
+    for material_id in material_ids:
+        try:
+            structure = mpr.get_structure_by_material_id(material_id)  # Fetch structure
+            poscar = Poscar(structure)  # Convert to POSCAR format
+            filename = os.path.join("POSCAR_dir", f"{material_id}-POSCAR")
+            poscar.write_file(filename)  # Save file
+            print(f"{material_id} saved as {filename}")
+        except Exception as e:
+            print(f"Error downloading {material_id}: {e}")
+
+def query_and_save_poscars(mpr, criteria):
+    """
+    Query materials from Materials Project based on given criteria and save them as POSCAR files.
+
+    Parameters:
+        mpr (MPRester): Active connection to Materials Project API.
+        criteria (dict): Dictionary of search filters (e.g., band gap range, space group).
+
+    Saves:
+        POSCAR files for all matching materials.
+    """
+    properties = ["material_id", "pretty_formula", "structure"]
+    
+    try:
+        materials = mpr.query(criteria=criteria, properties=properties)
+        print(f"Found {len(materials)} materials matching the criteria.")
+
+        for material in materials:
+            material_id = material["material_id"]
+            structure = material["structure"]
+            poscar = Poscar(structure)
+            filename = os.path.join("POSCAR_dir", f"{material_id}-POSCAR")
+            poscar.write_file(filename)
+            print(f"{material['pretty_formula']} ({material_id}) saved as {filename}")
+
+    except Exception as e:
+        print(f"Error querying materials: {e}")
+
+# Connect to Materials Project API
+with MPRester(API_KEY) as mpr:
+    # ==============================
+    # Manually Specified Materials
+    material_ids = ["mp-5304", "mp-5229"]  # Replace with your mp-ids
+    download_and_save_poscars(mpr, material_ids)
+    # ==============================
+
+    # ==============================
+    # Query Materials Based on Criteria
+    criteria = {
+        "elements": {"$all": ["O"]},  # Must contain Si and O
+        "band_gap": {"$gte": 1.0, "$lte": 3.0},  # Band gap: 1.0 - 3.0 eV
+        "density": {"$gte": 2},  # Density > 2 g/cm³
+        "spacegroup.symbol": "Pm-3m"  # Space group Pm-3m
+    }
+    query_and_save_poscars(mpr, criteria)
+    # ==============================
+```
+
 ## 4.2. Stacking Bilayer Structures
 
 ### 4.2.1 `pyhtstack2d.buildbilayer.stackBilayer`
