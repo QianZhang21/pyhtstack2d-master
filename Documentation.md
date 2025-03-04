@@ -1206,7 +1206,12 @@ for mid, item in d2data.items():
 # =============================================================================
 ```
 
-## 5.3. 2T-FeCl2 bilayer interlayer ferroelectric sliding
+## 5.3. 2T-FeCl₂ bilayer interlayer ferroelectric sliding
+
+This section provides a Python script to systematically generate bilayer structures with interlayer ferroelectric sliding. The script interpolates fractional coordinates between two stacking configurations, enabling the study of ferroelectric sliding phenomena in layered materials.
+
+The script located in the directory: `pyhtstack2d\script\sliding` an be executed directly to generate the expected **2T-FeCl₂ double-layer ferroelectric sliding structure**. Alternatively, the following code can be used:
+
 ```python
 import numpy as np
 import os
@@ -1253,7 +1258,10 @@ for position in interpolated_positions:
     Bilayer(moved_monolayer_file, monolayer_file, overwrite=False, skip_xy_rev=True).WritePOSCAR()
 ```
 
-## 5.4. LaAlO3/SrTiO3 heterointerface
+## 5.4. LaAlO₃/SrTiO₃ heterointerface
+This section provides a Python script to generate the LaAlO₃/SrTiO₃ heterointerface by constructing n-layer multilayers for both LaAlO₃ and SrTiO₃ and stacking them together. This allows for the systematic study of interfacial phenomena in perovskite oxide heterostructures.
+
+The script located in the directory: `pyhtstack2d\script\heterointerface` can be executed directly to generate the 6+6 LaAlO₃/SrTiO₃ heterointerface structure. Alternatively, the following code can be used:
 
 ```python
 import os
