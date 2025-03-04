@@ -18,7 +18,7 @@ d_inter = 1.92358
 for i, lstr in enumerate(["up", "bottom"]):  # Loop through both layers
     di = d_intra[i]  # Assign the corresponding intralayer distance
     mono = monoup if i == 0 else monobottom  # Select the correct monolayer file
-    for ni in range(nlayer):  # Iteratively build up multilayers
+    for ni in range(nlayer-1):  # Iteratively build up multilayers
         # For the first layer, use the monolayer structure; for subsequent layers, use the growing multilayer structure
         mono_multilayer = mono if ni == 0 else f"{lstr}_multilayer-POSCAR"
         # Ensure the working directory is clean before generating new structures
