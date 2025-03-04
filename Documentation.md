@@ -1110,7 +1110,7 @@ with open(midtxt, 'r') as f:
 ```
 
 
-# 5. High-throughput illustrative examples
+# 5. High-throughput or practical applications
 
 ## 5.1. Hexagonal crystal systems containing 3 atoms monolayers
 
@@ -1206,7 +1206,106 @@ for mid, item in d2data.items():
 # =============================================================================
 ```
 
-## 5.3. Homocrystalline system with multiple atomic number monolayers
+## 5.3. 2T-FeCl2 bilayer interlayer ferroelectric sliding
+```python
+import numpy as np
+import os
+import shutil
+from pyhtstack2d.buildbilayer.RotMovePOSCAR import move_poscar
+from pyhtstack2d.buildbilayer.stackBilayer import Bilayer
+
+
+def interpolate_positions(inipos, finalpos, num_points):
+    """
+    Generate interpolated positions between the initial and final positions.
+
+    Parameters:
+    inipos (numpy.ndarray): Initial position as a numpy array.
+    finalpos (numpy.ndarray): Final position as a numpy array.
+    num_points (int): Number of interpolation points.
+
+    Returns:
+    list: A list of interpolated positions.
+    """
+    return [inipos + (finalpos - inipos) * i / num_points for i in range(num_points+1)]
+
+# ========== Specify the Input Parameters ==========
+monolayer_file = "FeCl2-1.vasp"  # Monolayer structure file
+initial_position = np.array([1/3, -1/3, 0])  # Initial interlayer shift
+final_position = np.array([2/3, -2/3, 0])  # Final interlayer shift
+num_interpolation_points = 9  # Number of interpolation steps
+# ================================================
+
+
+# Generate interpolated positions
+interpolated_positions = interpolate_positions(initial_position, final_position, num_interpolation_points)
+# Loop through each interpolated position and generate bilayer structures
+for position in interpolated_positions:
+    # Ensure the POSCAR_moved directory does not contain previous data
+    moved_dir = "POSCAR_moved"
+    if os.path.exists(moved_dir):
+        shutil.rmtree(moved_dir)
+    # Move monolayer structure to the specified interlayer position
+    move_poscar(monolayer_file, position)
+    # Retrieve the newly moved monolayer structure file
+    moved_monolayer_file = os.path.join(moved_dir, os.listdir(moved_dir)[0])
+    # Construct the bilayer structure and write the POSCAR output
+    Bilayer(moved_monolayer_file, monolayer_file, overwrite=False, skip_xy_rev=True).WritePOSCAR()
+```
+
+## 5.4. LaAlO3/SrTiO3 heterointerface
+
+```python
+import os
+import shutil
+from pyhtstack2d.buildbilayer.stackBilayer import Bilayer
+
+# =============== Specify the Input Parameters ==============
+# Intralayer distances (atomic spacing within each monolayer)
+d_intra = [1.93161, 1.91135]
+# Number of layers in each multilayer structure (nlayer + nlayer will form the heterointerface)
+nlayer = 6
+# Monolayer structure files for the upper and bottom layers
+monoup = "LaAlO3-POSCAR.vasp"  # "mp-5304-POSCAR"
+monobottom = "SrTiO3-POSCAR.vasp"  # "mp-5229-POSCAR"
+# Interlayer distance for the final heterointerface
+d_inter = 1.92358
+# ==========================================================
+
+# Generate multilayer structures for both the upper and bottom layers
+for i, lstr in enumerate(["up", "bottom"]):  # Loop through both layers
+    di = d_intra[i]  # Assign the corresponding intralayer distance
+    mono = monoup if i == 0 else monobottom  # Select the correct monolayer file
+    for ni in range(nlayer):  # Iteratively build up multilayers
+        # For the first layer, use the monolayer structure; for subsequent layers, use the growing multilayer structure
+        mono_multilayer = mono if ni == 0 else f"{lstr}_multilayer-POSCAR"
+        # Ensure the working directory is clean before generating new structures
+        if os.path.exists("BiPOSCAR_dir"):
+            shutil.rmtree("BiPOSCAR_dir")
+        # Generate the multilayer structure with the specified intralayer distance
+        bigen = Bilayer(mono, mono_multilayer, d_inter=di, skip_xy_rev=True, lv=nlayer * 10)
+        bigen.WritePOSCAR()
+        # Define the path for the newly generated POSCAR file
+        biposcar = os.path.join(bigen.savepath, bigen.formula_w, "AA", "cord1", "POSCAR")
+        # Copy the generated POSCAR file to serve as input for the next layer
+        shutil.copy(biposcar, f"{lstr}_multilayer-POSCAR")
+
+# Construct the final heterointerface structure by stacking the two multilayers
+bigen = Bilayer("up_multilayer-POSCAR", "bottom_multilayer-POSCAR", d_inter=d_inter, skip_xy_rev=True, lv=nlayer * 20)
+bigen.WritePOSCAR()
+# Retrieve the final heterointerface POSCAR file
+biposcar = os.path.join(bigen.savepath, bigen.formula_w, "AA", "cord1", "POSCAR")
+# Save the heterointerface POSCAR file as the final output
+shutil.copy(biposcar, "heterointerface-POSCAR")
+# Cleanup: Remove temporary directories and files to keep the workspace clean
+shutil.rmtree("BiPOSCAR_dir")  # Remove temporary directory
+os.remove("up_multilayer-POSCAR")  # Delete the intermediate multilayer file for the upper layer
+os.remove("bottom_multilayer-POSCAR")  # Delete the intermediate multilayer file for the bottom layer
+
+print("Heterointerface structure generation complete.")
+```
+
+## 5.5. Homocrystalline system with multiple atomic number monolayers
 
 The above examples all limit the need for all monolayers to have the same number of atoms and crystal system, and here an example is given that allows stacking between monolayers of the same crystal system, but without limiting the number of atoms.
 
