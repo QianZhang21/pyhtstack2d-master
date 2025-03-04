@@ -25,7 +25,7 @@ for i, lstr in enumerate(["up", "bottom"]):  # Loop through both layers
         if os.path.exists("BiPOSCAR_dir"):
             shutil.rmtree("BiPOSCAR_dir")
         # Generate the multilayer structure with the specified intralayer distance
-        bigen = Bilayer(mono, mono_multilayer, d_inter=di, skip_xy_rev=True, lv=nlayer * 10)
+        bigen = Bilayer(mono, mono_multilayer, d_inter=di, skip_xy_rev=True, lv=nlayer * 5)
         bigen.WritePOSCAR()
         # Define the path for the newly generated POSCAR file
         biposcar = os.path.join(bigen.savepath, bigen.formula_w, "AA", "cord1", "POSCAR")
@@ -33,7 +33,7 @@ for i, lstr in enumerate(["up", "bottom"]):  # Loop through both layers
         shutil.copy(biposcar, f"{lstr}_multilayer-POSCAR")
 
 # Construct the final heterointerface structure by stacking the two multilayers
-bigen = Bilayer("up_multilayer-POSCAR", "bottom_multilayer-POSCAR", d_inter=d_inter, skip_xy_rev=True, lv=nlayer * 20)
+bigen = Bilayer("up_multilayer-POSCAR", "bottom_multilayer-POSCAR", d_inter=d_inter, skip_xy_rev=True, lv=nlayer * 10)
 bigen.WritePOSCAR()
 # Retrieve the final heterointerface POSCAR file
 biposcar = os.path.join(bigen.savepath, bigen.formula_w, "AA", "cord1", "POSCAR")
