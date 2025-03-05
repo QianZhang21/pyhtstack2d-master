@@ -1039,6 +1039,19 @@ The special keys and associated descriptions of `biinfo.json` are as follows:
 
 In `biinfo-simple.json`, single-layer information and elemental details are omitted, providing a concise display of bandgaps, binding energies, and band alignment types for different stacking configurations.
 
+> **Note:** When extracting multiple properties from thousands or even tens of thousands of data entries—such as energy, structural characteristics, and layer-resolved band structures—it is recommended to execute Python scripts on a computing cluster via job submission scripts rather than running them interactively.
+To achieve this, the extraction logic can be implemented in a script named `getResults.py` and submitted as a job using a submission script, `runpy.sh`, which contains the following directives:
+```bash
+#!/bin/bash -x
+#SBATCH -J getResults
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH -p long
+#SBATCH -o %j.log
+#SBATCH -e %j.err
+
+python getResults.py
+```
 
 ### 4.5.4. `pyhtstack2d.analysis.plotBAND`
 
