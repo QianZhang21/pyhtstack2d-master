@@ -896,6 +896,8 @@ from pyhtstack2d.tools.genInput import MulTaskRW
 MulTaskRW(multilevel=4, saveall=True).genRunsh()
 ```
 
+Alternatively, [Custodian](https://materialsproject.github.io/custodian/) can be used for the management of computing tasks. As a powerful toolkit, it manages a series of jobs with an extensive list of error handlers, covering nearly all common issues that may arise in VASP calculations. When encountering computational errors, Custodian automatically adjusts the INCAR parameters until the calculation is successfully completed or the predefined maximum number of fix attempts is reached. This method requires only a simple modification in the job submission script, where `python custodian_vasp.py` replaces the direct execution of `mpirun vasp_std`. The corresponding script is available in the `pyhtstack2d/Script/handleebycustodian` directory.
+
 ## 4.5. Batch Extraction and Simple Analysis of Results
 
 ### 4.5.1. `pyhtstack2d.tools.genInput.OptPOSCAR`
