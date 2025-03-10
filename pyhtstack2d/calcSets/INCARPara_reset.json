@@ -35,8 +35,12 @@
     },
 
     "dos": {
-        "LWAVE": ".FALSE.",
-        "LCHARG": ".FALSE.",
+        "LWAVE": ".TRUE.",
+        "LCHARG": ".TRUE.",
+        "ADDGRID": ".TRUE.",
+        "ISMEAR": -5,
+        "SIGMA": 0.05,
+        "EDIFF": 1e-08,
         "ISTART": 1,
         "ICHARG": 11,
         "LORBIT": 11,
