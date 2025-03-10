@@ -1124,6 +1124,27 @@ with open(midtxt, 'r') as f:
         plotDOS(path=path).plot_dos()
 ```
 
+Alternatively, use pymatgen to plot the DOS:
+
+```python
+from pymatgen.io.vasp import Vasprun
+from pymatgen.electronic_structure.plotter import DosPlotter
+
+xmlfile = Vasprun('vasprun.xml') # Specify the path to the vasprun.xml file
+dosdata = xmlfile.complete_dos
+plotter = DosPlotter()
+
+# Example: Projecting the DOS onto the elements
+element_dos = dosdata.get_element_dos()
+plotter.add_dos_dict(element_dos)
+plotter.save_plot('dos_element.png', img_format='png', xlim=[-4,4])
+
+# Example: Projecting the DOS onto the s, p, and d orbitals
+spd_dos = dosdata.get_spd_dos()
+plotter.add_dos_dict(spd_dos)
+plotter.save_plot('dos_spd.png', img_format='png', xlim=[-4,4])
+```
+
 
 # 5. High-throughput or practical applications
 
