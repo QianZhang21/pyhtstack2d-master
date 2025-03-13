@@ -510,7 +510,7 @@ class GetResults:
                     self.infobi_dict[materialid]["blabel"] = material_data["label"]
                     self.infobi_dict[materialid]["bl1label"] = bl1label
                     self.infobi_dict[materialid]["bl2label"] = bl2label
-                    self.infobi_dict[materialid]["dinterlayer"] = [material_data["zdiff"][natomlayer1 - 1]]
+                    self.infobi_dict[materialid]["dinterlayer"] = [material_data["zdiff"][-natomlayer1]]
 
                     if monodicttype is not None:
                         if bl1label in self.infomono_dict and bl2label in self.infomono_dict:
@@ -569,7 +569,7 @@ class GetResults:
                 self.infobi_dict[materialid]["stackmode"].append(stackmode)
                 self.infobi_dict[materialid]["Efermi"].append(material_data["Efermi"])
                 self.infobi_dict[materialid]["E0"].append(material_data["E0"])
-                self.infobi_dict[materialid]["dinterlayer"].append(material_data["zdiff"][natomlayer1 - 1])
+                self.infobi_dict[materialid]["dinterlayer"].append(material_data["zdiff"][-natomlayer1])
                 if "mag" in material_data:
                     self.infobi_dict[materialid]["mag"].append(material_data["mag"])
 
