@@ -497,7 +497,7 @@ class GetResults:
                 if mismatch:
                     self.infobi_dict[materialid]["mismatch"] = [mismatch]
                 if natomlayer1:
-                    self.infobi_dict[materialid]["natomlayer1"] = natomlayer1
+                    self.infobi_dict[materialid]["natomlayer1"] = [natomlayer1]
 
                 if natomlayer1:
                     if bimondictload:
@@ -570,7 +570,10 @@ class GetResults:
                 self.infobi_dict[materialid]["Efermi"].append(material_data["Efermi"])
                 self.infobi_dict[materialid]["E0"].append(material_data["E0"])
                 self.infobi_dict[materialid]["dinterlayer"].append(material_data["zdiff"][-natomlayer1])
-                self.infobi_dict[materialid]["mismatch"].append(mismatch)
+                if mismatch:
+                    self.infobi_dict[materialid]["mismatch"].append(mismatch)
+                if natomlayer1:
+                    self.infobi_dict[materialid]["natomlayer1"].append(natomlayer1)
                 if "mag" in material_data:
                     self.infobi_dict[materialid]["mag"].append(material_data["mag"])
 
