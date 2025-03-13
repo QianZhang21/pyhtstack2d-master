@@ -496,8 +496,8 @@ class GetResults:
 
                 if mismatch:
                     self.infobi_dict[materialid]["mismatch"] = [mismatch]
-                if natomlayer1:
-                    self.infobi_dict[materialid]["natomlayer1"] = [natomlayer1]
+                # if natomlayer1:
+                #     self.infobi_dict[materialid]["natomlayer1"] = [natomlayer1]
 
                 if natomlayer1:
                     if bimondictload:
@@ -506,7 +506,7 @@ class GetResults:
                     else:
                         bl1label = "".join(material_data["elements"][:natomlayer1])
                         bl2label = "".join(material_data["elements"][natomlayer1:])
-                    self.infobi_dict[materialid]["natomlayer1"] = natomlayer1
+                    self.infobi_dict[materialid]["natomlayer1"] = [natomlayer1]
                     self.infobi_dict[materialid]["blabel"] = material_data["label"]
                     self.infobi_dict[materialid]["bl1label"] = bl1label
                     self.infobi_dict[materialid]["bl2label"] = bl2label
