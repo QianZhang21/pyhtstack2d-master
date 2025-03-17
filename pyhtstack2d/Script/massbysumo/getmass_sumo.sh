@@ -21,8 +21,8 @@ do
     sumo-bandstats
     if [ `grep -c "ERROR" sumo-bandstats.log` -eq 0 ];then
         echo "=============" $file >> ../../../../../mass_sumo.txt
-        nstar=`grep -n -m 1 "Hole effective masses" sumo-bandstats.log | awk -F: '{print $1}'`
-        sed -n "${nstar},$p" sumo-bandstats.log >> ../../../../../mass_sumo.txt
+        nstar=$(grep -n -m 1 "Hole effective masses" sumo-bandstats.log | awk -F: '{print $1}')
+        sed -n "${nstar},\$p" sumo-bandstats.log >> ../../../../../mass_sumo.txt
     fi
     cd ..
     cd ../../..
