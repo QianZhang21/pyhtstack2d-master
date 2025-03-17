@@ -1,0 +1,10 @@
+Batch calculation of effective mass with sumo.
+About the sumo code: Alex M. Ganose, Adam J. Jackson, David O. Scanlon. sumo: Command-line tools for plotting and analysis of periodic ab initio calculations. Journal of Open Source Software, 2018 3 (28), 717, doi:10.21105/joss.00717.
+See the sumo documentation for more information: https://smtg-bham.github.io/sumo/index.html
+
+You need to install sumo first:
+```
+pip install --user sumo
+```
+
+Then run the getmass_sumo.sh script.
