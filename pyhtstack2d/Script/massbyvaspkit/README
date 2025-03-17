@@ -1,0 +1,7 @@
+Batch calculation of effective mass using VASPKIT.
+First, filter out the paths that need to be used to calculate the effective mass and save them in the ‘mass_mid.txt’ file.
+Then run the scripts in order:
+1-bashbandh.sh # Change the K-path scattering points to make the band structure calculation more intensive.
+2-genvpkit.py # Generate the VPKIT.in file
+3-bashmass.sh # Run vasp and analyse the effective mass with VASPKIT
+4-getmass.py # Batch extract the effective mass and save all the results to the ‘mass.txt’ file
