@@ -88,7 +88,7 @@ class StructureFromFile:
             Path to the POSCAR file.
         """
         self.StFile = stfile
-        self.uid = os.path.basename(self.StFile).split('-')[0]
+        self.uid = ''.join(os.path.basename(self.StFile).split('-')[0])
         self.latticeA = None
         self.latticeB = None
         self.latticeC = None
