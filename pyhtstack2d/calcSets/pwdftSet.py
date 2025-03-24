@@ -67,7 +67,7 @@ class InputWriter4pwdft:
 
     def write_single_input(self, stf):
         assert os.path.isfile(stf), f"File {stf} does not exist."
-        uid = os.path.basename(stf).split('-')[0]
+        uid = ''.join(os.path.basename(stf).split('-')[:-1])
         workdir_ = os.path.join(self.workdir, uid)
         if not self.overwrite:
             while os.path.isdir(workdir_):
