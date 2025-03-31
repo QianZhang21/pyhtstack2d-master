@@ -99,7 +99,7 @@ class Monolayer:
         self.cos_angle3 = np.dot(self.lattice[1], self.lattice[2]) / (self.b * self.c)
 
         if self.a > self.c or self.b > self.c:
-            raise ValueError("Please check the vacuum layer direction: z-axis is not the longest lattice vector.")
+            warnings.warn("Please check the vacuum layer direction: z-axis is not the longest lattice vector.")
 
         if self.posType.startswith('d'):
             self.positions_direct = positions_.copy()
