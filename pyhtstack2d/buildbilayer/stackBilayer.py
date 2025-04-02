@@ -318,7 +318,9 @@ class Bilayer:
             w_mode = 1
             Latype2, a2, b2, angle2, elements2, pos2_xy, pos2_z = Latype1, a1, b1, angle1, elements1, pos1_xy, pos1_z
 
-        assert Latype1 == Latype2, "The lattice type of the two layers are different."
+        if Latype1 != Latype2:
+            warnings.warn(f"The lattice type ({Latype1} and {Latype2}) of the two layers are different. "
+                          "The lattice type of the first layer will be used.")
 
         self.Latype = Latype1
         self.lv = lv
