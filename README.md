@@ -20,5 +20,4 @@ This software is licensed under the BSD 3-Clause License, one of the more permis
 ## How to Cite
 To cite PyHTStack2D in your research, please use the following citation:
 
-[1] Qian Zhang, Wei Hu, and Jinlong Yang, "PyHTStack2D: a Python package for high-throughput homo/hetero stacking of 2D materials," 
-
+[1] Qian Zhang, Jinlong Yang, and Wei Hu, PyHTStack2D: A Python package for high-throughput homo/hetero stacking of 2D materials, Computer Physics Communications, https://doi.org/10.1016/j.cpc.2025.109618.
