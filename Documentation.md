@@ -437,7 +437,7 @@ This module provides a class for transforming the lattice, such as converting a 
 - **`transmat`**: Transformation matrix for converting the cell. Defaults to `[[-1, 1, 0], [-1, -1, 0], [0, 0, 1]]`.
 - **`overwrite`**: Determines whether to overwrite the original POSCAR file. Defaults to `False`.
 
-#### Use Case:
+**Use Case:**
 
 ```python
 from pyhtstack2d.buildbilayer.TransLattice import transformlattice
@@ -467,13 +467,30 @@ This module provides a class for removing duplicate structures from a directory 
 - **`threshold`**: Tolerance for comparing the structures. Defaults to `1e-2`.
 - **`deleteempty`**: Flag indicating whether to delete empty directories. Defaults to `True`.
 
-#### Example Usage:
+**Use Case:**
 
 ```python
 from pyhtstack2d.buildbilayer.RemvDuplicates import remove_duplicates
 
 # Remove duplicate structures from the directory "BiPOSCAR_dir"
 remove_duplicates("BiPOSCAR_dir")
+```
+
+
+### 4.2.6. `pyhtstack2d.buildbilayer.CenterZ`
+This module provides a class for centering the atomic positions of a structure along the z-axis.
+
+#### Parameters:
+
+- **`stfile`**: Path to the POSCAR file.
+
+**Use Case:**
+
+```python
+from pyhtstack2d.buildbilayer.CenterZ import center
+
+stfile = "BiPOSCAR_dir/POSCAR"  # Path to the POSCAR file
+center(stfile)
 ```
 
 
@@ -674,6 +691,8 @@ GenRunDir(posdir="BiPOSCAR_dir",multilevel=4,inputOpt="relax-dip",kmeshrv=0.04,t
 GenRunDir(posdir="BiPOSCAR_dir",multilevel=4,inputOpt="scf-dip",kmeshrv=0.04,taskname="scf").genInputfile()
 GenRunDir(posdir="BiPOSCAR_dir",multilevel=4,inputOpt="band-dip",kmeshrv=0.04,postype='H',taskname="band").genInputfile()
 ```
+
+> **Warning**: When using pmg as an input file generator, for multi-level directories, be aware that the generated POTCAR may not have the same order of elements as the POSCAR in the multi-level directory, which needs to be double-checked.
 
 ### 4.3.7. `pyhtstack2d.calcSets.vaspMagSetsWriter`
 
