@@ -66,7 +66,7 @@ The **PyHTStack2D** package depends on several libraries. Below is a list of req
 - `numpy==2.1.2`
 - `pandas==1.4.4`
 - `pymatgen==2023.11.12`
-- `vaspkit>=1.3.5` (Note: **vaspkit** is not a Python package and needs to be downloaded and installed separately.)
+- `vaspkit==1.3.5` (Note: **vaspkit** is not a Python package and needs to be downloaded and installed separately.)
 
 During installation, you will be prompted with:
 
