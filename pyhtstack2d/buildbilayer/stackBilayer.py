@@ -183,7 +183,7 @@ class Monolayer:
 class Bilayer:
     def __init__(self, st1, st2=None, la1=None, la2=None, position1=None, position2=None, d_inter=3.3, lv=30.0,
                  savepath=None, savenamemode=1, hetero=True, mismatch_threshold=5.0, stackmode="AA", overwrite=True,
-                 skip_xy_rev=False):
+                 skip_xy_rev=False, seq_cord=None):
         """
         Constructing 2D bilayer structures.
 
@@ -230,6 +230,8 @@ class Bilayer:
             If True, the existing POSCAR files will be overwritten.
         skip_xy_rev: bool
             When skip_xy_rev is true, it does not take into account whether the XY position can be rotated. For example, for a 1T TMD monolayer, a 60° rotation will not be considered.
+        seq_cord: list
+            Manually specify the stacking sequence of the bilayer.
         """
         if savepath is None:
             self.savepath = 'BiPOSCAR_dir'
@@ -353,6 +355,14 @@ class Bilayer:
                 self.seq_cord = ["cord1", "cord2"]
             else:
                 self.seq_cord = ["cord1", "cord2", "cord3", "cord4"]
+
+        if seq_cord is not None:
+            assert isinstance(seq_cord, list), "Please provide the sequence of the coordinates in a list."
+            for seq in seq_cord:
+                if seq not in ["cord1", "cord2", "cord3", "cord4"]:
+                    assert False, f"{seq} is not a valid sequence. Please use 'cord1', 'cord2', 'cord3' or 'cord4'."
+            self.seq_cord = seq_cord
+
         count = Counter(self.elements)
         self.formula_w = ''.join(f"{element}{count[element] if count[element] > 1 else ''}" for element in count)
         if self.savenamemode == 1:
