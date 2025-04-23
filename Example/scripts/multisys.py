@@ -259,10 +259,19 @@ for mono1_index in bidict.keys():
         rotate_poscar(mono2, 60)
         formula_w = GenBiLayer_modify(pos_dir="POSCAR_moved", pos_dir2="POSCAR_rotated", genmode="bilayer",
                           overwrite=False, skip_xy_rev=True).batch_stack()
+        count = 0
+        formula_w_ori = formula_w
+        while formula_w in bimondictsave.keys():
+            count += 1
+            formula_w = formula_w_ori + "_" + str(count)
         print(formula_w)
         bimondictsave[formula_w] = [biobjec[mono1_index].split('-')[0], biobjec[mono2_index].split('-')[0]]
-        with open("bimondict.json", "w") as f:
-            json.dump(bimondictsave, f)
+
+with open("bimondict.json", "w") as f:
+    json.dump(bimondictsave, f)
+
+shutil.rmtree("POSCAR_moved")
+shutil.rmtree("POSCAR_rotated")
 # =============================================================================
 
 
@@ -273,4 +282,8 @@ GenRunDir(posdir="BiPOSCAR_dir", multilevel=4, genmode="vaspkit").genInputfile()
 # =============================================================================
 
 
+# =============================================================================
+from pyhtstack2d.analysis.extractResults import GetResults
 
+GetResults(scf="scf", band="band", nlayer=2, pmg=False, infodict="info.json").getInfoBi(monodict="monoinfo.json", bimondict="bimondict.json")
+# =============================================================================
