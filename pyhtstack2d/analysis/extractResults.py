@@ -1051,9 +1051,9 @@ class GetResults:
                 os.system(f"echo -e '927' | (cd {esppath} && vaspkit > Vacuum.txt)")
                 if os.path.exists(os.path.join(esppath, "Vacuum.txt")):
                     vacuum_potential = float(
-                        run_subprocess(f"grep 'Vacuum Level' {esppath}/Vacuum.txt | tail -n 1 | awk '{{print $4}}"))
+                        run_subprocess(f"grep 'Vacuum Level' {esppath}/Vacuum.txt | tail -n 1 | awk '{{print $4}}'"))
                     work_function = float(
-                        run_subprocess(f"grep 'Work Function' {esppath}/Vacuum.txt | tail -n 1 | awk '{{print $4}}"))
+                        run_subprocess(f"grep 'Work Function' {esppath}/Vacuum.txt | tail -n 1 | awk '{{print $4}}'"))
                     espinfo.update({
                         "vacuum_potential": vacuum_potential,
                         "work_function": work_function,
