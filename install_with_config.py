@@ -56,7 +56,7 @@ def configure_and_install():
 
     choice = input("Do you want to install recommended dependencies? (yes/no): ").strip().lower()
     if choice in ['yes', 'y']:
-        subprocess.run(["pip", "install", "ase==3.22.1", "matplotlib==3.5.1", "numpy==2.1.2", "pandas==1.4.4", "pymatgen==2023.11.12"])
+        subprocess.run(["pip", "install", "ase==3.24.0", "matplotlib==3.10.1", "numpy==2.2.4", "pandas==2.2.3", "pymatgen==2024.10.3"])
         print("\nRecommended dependencies installed.")
     else:
         print("\nSkipping recommended dependencies installation.")
