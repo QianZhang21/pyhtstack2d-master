@@ -17,7 +17,7 @@ Additionally, PyHTStack2D allows users to extract POSCAR files for 2D material s
 To successfully execute the intended simulations, the system should adhere to the following configuration prerequisites:
 
 ### Software Dependencies:
-- **Python**: A minimum of version 3.0 is required to support the necessary computational libraries and scripts.
+- **Python**: A minimum of version 3.10 is required to support the necessary computational libraries and scripts.
 - **Shell Environment**: The Bash shell is essential for scripting and managing the sequence of commands that initiate and control simulations.
 
 ### Computational Software:
