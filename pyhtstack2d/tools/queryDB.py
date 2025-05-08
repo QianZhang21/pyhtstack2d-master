@@ -170,8 +170,8 @@ def getuid(database, criteria, have_gap=True, save_csv=False, save_csv_path=None
                 key_value_pairs_list.append(row.key_value_pairs)
                 uid_list.append(row.get("uid"))
             key_value_pairs_df = pd.DataFrame(key_value_pairs_list)
-
-            key_value_pairs_df = key_value_pairs_df.drop(columns=['folder'])
+            if "folder" in key_value_pairs_df.columns:
+                key_value_pairs_df = key_value_pairs_df.drop(columns=['folder'])
             if save_csv_path:
                 try:
                     key_value_pairs_df.to_csv(save_csv_path)
