@@ -1,0 +1,342 @@
+{
+  "mp-1018134": {
+    "element": "Li",
+    "nelements": 1,
+    "nsites": 3,
+    "symmetry": "R-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-87": {
+    "element": "Be",
+    "nelements": 1,
+    "nsites": 4,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-10172": {
+    "element": "Na",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-153": {
+    "element": "Mg",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-134": {
+    "element": "Al",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Fm-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-45": {
+    "element": "Ca",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Fm-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-72": {
+    "element": "Ti",
+    "nelements": 1,
+    "nsites": 3,
+    "symmetry": "P6/mmm",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-146": {
+    "element": "V",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Im-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-90": {
+    "element": "Cr",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "Im-3m",
+    "is_stable": true,
+    "is_magnetic": true,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-30": {
+    "element": "Cu",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Fm-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-79": {
+    "element": "Zn",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-142": {
+    "element": "Ga",
+    "nelements": 1,
+    "nsites": 4,
+    "symmetry": "Cmce",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-139": {
+    "element": "Sr",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-131": {
+    "element": "Zr",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-75": {
+    "element": "Nb",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Im-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-129": {
+    "element": "Mo",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Im-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-113": {
+    "element": "Tc",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-33": {
+    "element": "Ru",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-74": {
+    "element": "Rh",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Fm-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-2": {
+    "element": "Pd",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Fm-3m",
+    "is_stable": true,
+    "is_magnetic": true,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-8566": {
+    "element": "Ag",
+    "nelements": 1,
+    "nsites": 4,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-94": {
+    "element": "Cd",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-85": {
+    "element": "In",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Fm-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-117": {
+    "element": "Sn",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "Fd-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-122": {
+    "element": "Ba",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "Im-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-103": {
+    "element": "Hf",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-91": {
+    "element": "W",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Im-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-49": {
+    "element": "Os",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-101": {
+    "element": "Ir",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Fm-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-126": {
+    "element": "Pt",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Fm-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-81": {
+    "element": "Au",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Fm-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-82": {
+    "element": "Tl",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "P6_3/mmc",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-20483": {
+    "element": "Pb",
+    "nelements": 1,
+    "nsites": 1,
+    "symmetry": "Fm-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  },
+  "mp-23152": {
+    "element": "Bi",
+    "nelements": 1,
+    "nsites": 2,
+    "symmetry": "R-3m",
+    "is_stable": true,
+    "is_magnetic": false,
+    "energy_above_hull": 0.0,
+    "band_gap": 0.0
+  }
+}
