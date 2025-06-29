@@ -1,0 +1,39 @@
+Project: 2D BN/Metal/BN Heterostructure Construction and Analysis
+==============================================================
+
+Description:
+------------
+This project provides tools and data for constructing, stacking, and analyzing
+2D metal/BN heterostructures using structures obtained from the Materials Project (MP) database.
+
+Folders:
+--------
+
+1. MP/
+   - Contains 3D metal structures that were screened from the Materials Project database
+     based on specific selection criteria.
+
+2. 3D_POSCAR_dir/
+   - Contains optimized 3D metal structures after structural relaxation.
+
+3. Results/
+   - Contains calculation outputs for the heterostructures.
+   - NOTE: The file 'In-mp85.vasp' was accidentally deleted before calculation.
+     As a result, the In-core heterostructure is not included in the current results.
+
+Scripts:
+--------
+
+1. cleavesurface.py
+   - Used to cleave 2D metal layers from 3D metal bulk structures.
+
+2. mismatch.py
+   - Stacks 2D metal layers with BN layers to form sandwich heterostructures.
+   - Designed for hexagonal lattice systems.
+
+3. mismatch_square.py
+   - Similar to mismatch.py but intended for orthorhombic, tetragonal, or cubic systems.
+
+4. isPuckered.py
+   - Calculates the degree of puckering (out-of-plane distortion) in the BN layers
+     after structure optimization.
