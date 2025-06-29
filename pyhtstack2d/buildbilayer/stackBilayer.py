@@ -347,7 +347,7 @@ class Bilayer:
             self.hetero = True
             self.lattice_w = self.check_lattice_mismatch(a1, b1, angle1, a2, b2, angle2)
             self.elements = elements1 + elements2
-            if abs(np.max(np.diff(pos1_z)) - 0) < 1e-3 and abs(np.max(np.diff(pos2_z)) - 0) < 1e-3:
+            if (len(pos1_z) == 1 or abs(np.max(np.diff(pos1_z)) - 0) < 1e-3) and (len(pos2_z) == 1 or abs(np.max(np.diff(pos2_z)) - 0) < 1e-3):
                 self.seq_cord = ["cord1"]
             elif self.elem1_ == self.elem1_[::-1] and self.elem2_ == self.elem2_[::-1]:
                 self.seq_cord = ["cord1"]
