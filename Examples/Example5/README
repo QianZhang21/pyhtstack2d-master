@@ -18,8 +18,6 @@ Folders:
 
 3. Results/
    - Contains calculation outputs for the heterostructures.
-   - NOTE: The file 'In-mp85.vasp' was accidentally deleted before calculation.
-     As a result, the In-core heterostructure is not included in the current results.
 
 Scripts:
 --------
