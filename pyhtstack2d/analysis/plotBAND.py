@@ -280,6 +280,11 @@ class plotBS:
                 # fig.set_size_inches((9, 8.5))
                 plt.savefig(os.path.join(self.savepath, self.savename), bbox_inches='tight', format=self.imag_format, dpi=self.dpi)
                 plt.close()
+            else:
+                plt.subplots_adjust(wspace=0.1)
+                plt.savefig(os.path.join(self.savepath, self.savename), bbox_inches='tight', format=self.imag_format,
+                            dpi=self.dpi)
+                plt.close()
 
     def readPDOS(self):
         if not self.elempro or not self.procar:
