@@ -8,6 +8,8 @@ import numpy as np
 from .analysisPROCAR import readPROCAR
 from .plotBAND import plotBS
 
+#If your Vaspkit version is >= 1.5.1, please modify lines 951-954.
+
 
 def run_subprocess(command):
     return subprocess.run(command, shell=True, capture_output=True, text=True).stdout.strip()
@@ -950,6 +952,15 @@ class GetResults:
                     int(run_subprocess(f"grep 'HOMO & LUMO Bands' {path}/BAND_GAP | awk '{{print $5}}'")) - 1]
                 cbm_band_index = [
                     int(run_subprocess(f"grep 'HOMO & LUMO Bands' {path}/BAND_GAP | awk '{{print $6}}'")) - 1]
+                
+                # =============================if vaspkit >= 1.5.1======================================================
+                # vbm_band_index = [
+                #     int(run_subprocess(f"grep 'Band Indexes of VBM & CBM' {path}/BAND_GAP | awk '{{print $7}}'")) - 1]
+                # cbm_band_index = [
+                #     int(run_subprocess(f"grep 'Band Indexes of VBM & CBM' {path}/BAND_GAP | awk '{{print $8}}'")) - 1]
+                # ======================================================================================================
+
+                
                 vbmlocation, cbmlocation = get_vbm_cbm_locations(path, "")
                 vbm_info_dict.update({"spin": "1", "band_index": vbm_band_index, "kpoint_coord": vbmlocation})
                 cbm_info_dict.update({"spin": "1", "band_index": cbm_band_index, "kpoint_coord": cbmlocation})
