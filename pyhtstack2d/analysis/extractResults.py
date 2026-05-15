@@ -512,7 +512,7 @@ class GetResults:
                     self.infobi_dict[materialid]["blabel"] = material_data["label"]
                     self.infobi_dict[materialid]["bl1label"] = bl1label
                     self.infobi_dict[materialid]["bl2label"] = bl2label
-                    self.infobi_dict[materialid]["dinterlayer"] = [material_data["zdiff"][-natomlayer1]]
+                    self.infobi_dict[materialid]["dinterlayer"] = [material_data["zdiff"][natomlayer1]]
 
                     if monodicttype is not None:
                         if bl1label in self.infomono_dict and bl2label in self.infomono_dict:
