@@ -333,7 +333,7 @@ class Bilayer:
         else:
             self.elem1_, self.elem2_ = elements1, elements2
 
-        self.natom1 = len(elements1)
+        self.natom1 = len(elements2)
 
         if w_mode == 1:
             self.hetero = False
